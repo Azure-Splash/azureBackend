@@ -1,5 +1,6 @@
 // handles boot up of the server
 
+require('dotenv').config()
 
 const { app } =require('./server');
 

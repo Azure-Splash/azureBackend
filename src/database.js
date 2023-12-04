@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 
 async function databaseConnect(){
     try{
-        await mongoose.connect('mongodb://localhost:27017/AzureDB');
+        await mongoose.connect(process.env.DB_URI);
         console.log(`Database Connected`);
     }catch(error){
         console.warn(`Failed to connect \n ${Json.stringify(error)}`)
