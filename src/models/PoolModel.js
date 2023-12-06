@@ -7,7 +7,7 @@ const PoolSchema = new Schema({
         type: String,
         required: true,
     },
-    laneNumnber:{
+    laneNumber:{
         type: Number,
         required: true,
         min: 1,

@@ -9,13 +9,11 @@ const BookingSchema = new Schema({
       type: Date,
       required: true,
       unquie: true
+   },
+   time:{
+      type: String,
+      required: true
    }
-
-
-
-
-
-
 });
 
 const Booking = mongoose.model('Booking', BookingSchema);
