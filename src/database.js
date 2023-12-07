@@ -16,5 +16,5 @@ async function databaseConnect(){
     }
 
 module.exports={
-    databaseConnect
+    databaseConnect 
 }
