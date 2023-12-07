@@ -11,3 +11,5 @@ router.get("/all", async (request, response) => {
 	});
 
 });
+
+module.exports = router;
