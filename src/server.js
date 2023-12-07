@@ -11,6 +11,9 @@ app.get("/", (request,response)=>{
 
 const { User } = require('./models/UserModel');
 
+const UserRouter = require('./controllers/UserController');
+app.use('/users', UserRouter);
+
 module.exports={
     app
 }
