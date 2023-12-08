@@ -2,12 +2,73 @@ const express = require('express');
 const { User } = require('../models/UserModel');
 const router = express.Router();
 
-router.get("/", async (request, response) => {
+router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
 	let result = await User.find({});
 
 	response.json({
-		users: result
+		user: result
+	});
+
+});
+
+// find one user by id
+router.get("/one/:id", async (request, response) => {
+	let result = null;
+
+	response.json({
+		user: result
+	});
+
+});
+
+// find user by last name
+router.get("/users/name/:lastName", async (request, response) => {
+	let result = null;
+
+	response.json({
+		user: result
+	});
+
+});
+
+// find user by email
+router.get("/users/email/:email", async (request, response) => {
+	let result = null;
+
+	response.json({
+		user: result
+	});
+
+});
+
+// create new user
+router.post("/", async (request, response) => {
+	
+    let result = await User.create(request.body).catch(error => {return error});
+	
+    response.json({
+		user: result
+	});
+});
+
+// update user
+// does not overwrite or remove any unmentioned properties
+router.patch("/:id", async (request, response) => {
+	let result = null;
+
+	response.json({
+		user: result
+	});
+
+});
+
+// delete user by id
+router.delete("/:id", async (request, response) => {
+	let result = null;
+
+	response.json({
+		user: result
 	});
 
 });
