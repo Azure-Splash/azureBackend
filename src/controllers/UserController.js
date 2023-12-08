@@ -47,9 +47,7 @@ router.post("/", async (request, response) => {
 	
     let result = await User.create(request.body).catch(error => {return error});
 	
-    response.json({
-		user: result
-	});
+    response.json(newUser);
 });
 
 // update user
