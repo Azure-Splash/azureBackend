@@ -22,13 +22,13 @@ router.get("/all", async (request, response) => {
 // });
 
 // find user by last name
-// router.get("/name/:lastName", async (request, response) => {
-// 	let result = await User.findOne({_id: request.params.lastName});
+router.get("/name/:lastName", async (request, response) => {
+	let result = await User.findOne({lastName: request.params.lastName});
 
-// 	response.json({
-// 		user: result
-// 	});
-// });
+	response.json({
+		user: result
+	});
+});
 
 
 
