@@ -31,13 +31,10 @@ router.get("/users/name/:lastName", async (request, response) => {
 
 // find user by email
 router.get("/users/email/:email", async (request, response) => {
-	let result = null;
+	let result = await User.findOne({_id: request.params.email});
 
-	response.json({
-		user: result
-	});
-
-});
+	response.json({result});
+})
 
 // create new user
 router.post("/", async (request, response) => {
