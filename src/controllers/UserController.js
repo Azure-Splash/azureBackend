@@ -36,7 +36,11 @@ router.get("/name/:lastName", async (request, response) => {
 router.post("/", async (request, response) => {
 	let newUser = await User.create(request.body).catch(error => error);
 
-	response.json(newUser);
+	
+    response.json({
+		user: result
+	});
+    // response.json(newUser);
 })
 
 // update user

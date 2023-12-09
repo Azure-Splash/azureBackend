@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express();
 
+app.use(express.json());
+
 // const cors = require('cors');
 // const corsOptions = {
 // 	//			frontend localhost,  frontend deployed
