@@ -20,21 +20,13 @@ router.get("/one/:id", async (request, response) => {
 })
 
 // find user by last name
-router.get("/users/name/:lastName", async (request, response) => {
-	let result = null;
-
-	response.json({
-		user: result
-	});
-
-});
-
-// find user by email
-router.get("/users/email/:email", async (request, response) => {
-	let result = await User.findOne({_id: request.params.email});
+router.get("/name/:lastName", async (request, response) => {
+	let result = await User.findOne({_id: request.params.lastName});
 
 	response.json({result});
 })
+
+
 
 // create new user
 router.post("/", async (request, response) => {
