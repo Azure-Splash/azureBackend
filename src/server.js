@@ -19,7 +19,6 @@ app.get("/", (request,response)=>{
     })
 });
 
-const { User } = require('./models/UserModel');
 
 const UserController = require('./controllers/UserController');
 app.use('/users', UserController);

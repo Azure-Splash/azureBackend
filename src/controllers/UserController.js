@@ -41,7 +41,7 @@ router.post("/", async (request, response) => {
 		user: result
 	});
     // response.json(newUser);
-})
+});
 
 // update user
 // does not overwrite or remove any unmentioned properties
