@@ -44,11 +44,10 @@ router.get("/users/email/:email", async (request, response) => {
 
 // create new user
 router.post("/", async (request, response) => {
-	
-    let result = await User.create(request.body).catch(error => {return error});
-	
-    response.json(newUser);
-});
+	let newUser = await User.create(request.body).catch(error => error);
+
+	response.json(newUser);
+})
 
 // update user
 // does not overwrite or remove any unmentioned properties
