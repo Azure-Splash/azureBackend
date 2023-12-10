@@ -6,11 +6,13 @@ const UserSchema = new Schema({
 
     firstName:{
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     lastName:{
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     email:{
       type: String,
@@ -21,6 +23,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         minLength: 8,
+        unique: false
     },
     phoneNumber:{
         type:String, 
@@ -34,11 +37,13 @@ const UserSchema = new Schema({
     },
     age:{
         type: String,
-        required: false
+        required: false,
+        unique: false
     },
-    address:{
+    suburb:{
         type: String,
-        required: true
+        required: true,
+        unique: false
     }
 });
 

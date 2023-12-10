@@ -6,11 +6,13 @@ const WorkerSchema = new Schema({
 
     firstName:{
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     lastName:{
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     email:{
       type: String,
@@ -21,14 +23,27 @@ const WorkerSchema = new Schema({
         type: String,
         required: true,
         minLength: 8,
+        unique: false
     },
-    dateOfBirth:{
-        type: String,
-        required: false
-    },
-    address:{
-        type: String,
+    phoneNumber:{
+        type:String, 
+        unique:true,
+        validate: {
+        validator: function(v) {
+          return /^([0-9]{10}$)/.test(v);
+        }},
         required: true
+
+    },
+    age:{
+        type: String,
+        required: false,
+        unique: false
+    },
+    suburb:{
+        type: String,
+        required: true,
+        unique: false
     },
     isAdmin:{
         type: Boolean,
