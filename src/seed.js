@@ -3,28 +3,49 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 const { databaseConnect } = require('./database');
 const { User } = require('./models/UserModel');
+const { Worker } = require('./models/WorkersModel');
 
 databaseConnect().then(async () => {
 
 	console.log("Creating seed data!");
 
 
-    let testUser = new User({
+    let newAdmin = await Worker.create({
 
-        firstName: "Scott",
+        firstName: "Stacy",
         lastName: "Jones",
-        email: "scott@email.com",
+        email: "stacy@azure.com",
         password: "password",
-        dateOfBirth: "24 november",
-        address: "123 fake st"
-    })
+        phoneNumber:"0404999222",
+        age: "45",
+        surburb: "Burleigh",
+        isAdmin: "true"
+    });
+    
+    let newUser = await User.create({
 
-    await testUser.save().then(() => {
-		console.log(`${testUser.firstName} is in the DB`);
-	});
+        firstName: "Jean",
+        lastName: "Peters",
+        email: "jean@gmail.com",
+        password: "password12",
+        phoneNumber:"0401438902",
+        age: "26",
+        surburb: "Mermaid Water",
+    });
 
+    let newWorker = await Worker.create({
+
+        firstName: "Tom",
+        lastName: "Roman",
+        email: "tom@azure.com",
+        password: "password",
+        phoneNumber:"0402663123",
+        age: "30",
+        surburb: "Miami",
+        isAdmin: "false"
+    });
 
 }).then(async () => {
-	// await dbDisconnect();
+
 })
 
