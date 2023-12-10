@@ -6,12 +6,11 @@ const PoolSchema = new Schema({
     poolName:{
         type: String,
         required: true,
+        unique: true
     },
-    laneNumber:{
+    numberOfLanes:{
         type: Number,
         required: true,
-        min: 1,
-        max:6
     }
 
 
