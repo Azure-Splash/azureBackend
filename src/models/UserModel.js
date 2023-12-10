@@ -22,7 +22,17 @@ const UserSchema = new Schema({
         required: true,
         minLength: 8,
     },
-    dateOfBirth:{
+    phoneNumber:{
+        type:String, 
+        unique:true,
+        validate: {
+        validator: function(v) {
+          return /^([0-9]{10}$)/.test(v);
+        }},
+        required: true
+
+    },
+    age:{
         type: String,
         required: false
     },
