@@ -64,34 +64,34 @@ router.post("/", async (request, response) => {
 
 // update user
 // does not overwrite or remove any unmentioned properties
-router.patch("/:id", async (request, response) => {
-	let result = await User.findByIdAndUpdate(
-		request.params.id, 
-		request.body,
-		{
-			returnDocument:"after",
+// router.patch("/:id", async (request, response) => {
+// 	let result = await User.findByIdAndUpdate(
+// 		request.params.id, 
+// 		request.body,
+// 		{
+// 			returnDocument:"after",
 	
-		}
-		).catch(error => error);
+// 		}
+// 		).catch(error => error);
 
-	response.json({
-		sighting: result
-	});
+// 	response.json({
+// 		sighting: result
+// 	});
 
-});
+// });
 
-	response.json({
-		user: result
-	});
+// 	response.json({
+// 		user: result
+// 	});
 
-// delete user by id
-router.delete("/:id", async (request, response) => {
-	let result = await User.findByIdAndDelete(request.params.id).populate('user', '-password');
+// // delete user by id
+// router.delete("/:id", async (request, response) => {
+// 	let result = await User.findByIdAndDelete(request.params.id).populate('user', '-password');
 
-	response.json({
-		deletedUser: result
-	});
+// 	response.json({
+// 		deletedUser: result
+// 	});
 
-});
+// });
 
 module.exports = router;
