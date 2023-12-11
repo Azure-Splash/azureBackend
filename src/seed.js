@@ -5,6 +5,7 @@ const { databaseConnect } = require('./database');
 const { User } = require('./models/UserModel');
 const { Worker } = require('./models/WorkersModel');
 const { Pool } = require('./models/PoolModel');
+const { Booking } = require('./models/BookingModel');
 
 databaseConnect().then(async () => {
 
@@ -61,6 +62,16 @@ databaseConnect().then(async () => {
         numberOfLanes: "6"
     });
 
+
+    // Booking Model
+
+    let newBooking = await Booking.create({
+        user: newUser._id,
+        pool: newIndoorPool._id,
+        lane: "2",
+        date: "9/12/23",
+        time: "3pm"
+    });
 
 }).then(async () => {
 
