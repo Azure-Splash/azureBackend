@@ -20,3 +20,5 @@ router.get("/one/:id", async (request, response) => {
 		staff: result
 	});
 });
+
+module.exports = router;
