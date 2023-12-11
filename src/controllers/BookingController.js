@@ -23,7 +23,7 @@ router.get("/one/:id", async (request, response) => {
 
 // find booking by user id
 router.get("/user/:id", async (request, response) =>{
-    let result = await Booking.find({user_id: request.params.user._id}).populate('user pool', '-password');
+    let result = await Booking.find({user: request.params.user._id}).populate('user pool', '-password');
 
     response.json({
         booking: result
