@@ -24,9 +24,8 @@ router.get("/admin/one/:id", async (request, response) => {
 });
 
 // get bookings by user id
-router.get("/admin/user/:id", async (request, response) =>{
-    const userId = req.params.user._id;
-    let result = await Booking.find({ user: userId }).populate('user').populate('pool');
+router.get("/admin/user/:userId", async (request, response) =>{
+    let result = await Booking.find({ user: request.params.userId }).populate('user').populate('pool');
 
     response.json({
 		booking: result
@@ -68,17 +67,4 @@ module.exports = router;
 
 
 
-// // Controller function to get bookings by user
-// const getBookingsByUser = async (req, res) => {
-//   const userId = req.params.userId; // Assuming the user ID is passed as a parameter
 
-//   try {
-//     const bookings = await Booking.find({ user: userId }).populate('user').populate('pool').catch(error => error);
-//     res.json(bookings);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// };
-
-// module.exports = { getBookingsByUser };
