@@ -32,6 +32,15 @@ router.get("/admin/user/:userId", async (request, response) =>{
 	});
 });
 
+// get bookings by pool
+router.get("/admin/pool/:poolId", async (request, response) => {
+    let result = await Booking.find({pool: request.params.poolId}).populate('user pool', '-password').catch(error => error);
+
+    response.json({
+        booking: result
+    });
+});
+
 // edit booking by id
 router.patch("/:id", async (request, response) => {
 	let result = await Booking.findByIdAndUpdate(
