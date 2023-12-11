@@ -83,7 +83,8 @@ router.patch("/:id", async (request, response) => {
 
 // delete user by id
 router.delete("/:id", async (request, response) => {
-	let result = await User.findByIdAndDelete(request.params.id).populate('user', '-password');
+	let result = await User.findByIdAndDelete(request.params.id).catch(error => error);
+    result = await result.populate('user', '-password');
 
 	response.json({
 		deletedUser: result
