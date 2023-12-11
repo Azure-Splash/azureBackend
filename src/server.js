@@ -21,7 +21,7 @@ app.get("/", (request,response)=>{
 
 
 const UserController = require('./controllers/UserController');
-app.use('/users', UserController);
+app.use('/users', UserController); 
 
 module.exports={
     app
