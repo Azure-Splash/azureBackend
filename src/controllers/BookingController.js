@@ -2,7 +2,7 @@ const express = require('express');
 const { Booking } = require('../models/BookingModel');
 const router = express.Router();
 
-router.get("/all", async (request, response) => {
+router.get("/admin/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
 	let result = await Booking.find({});
 
@@ -13,7 +13,7 @@ router.get("/all", async (request, response) => {
 });
 
 // find one booking by id
-router.get("/one/:id", async (request, response) => {
+router.get("/admin/one/:id", async (request, response) => {
 	let result = await Booking.findOne({_id: request.params.id}).populate('user pool', '-password');
 
 	response.json({
@@ -22,8 +22,8 @@ router.get("/one/:id", async (request, response) => {
 });
 
 // find booking by user id
-router.get("/user/:id", async (request, response) =>{
-    let result = await Booking.find({_id: request.params.user._id}).populate('user pool', '-password');
+router.get("admin/user/:id", async (request, response) =>{
+    let result = await Booking.find({_id: request.params.user.id}).populate('user pool', '-password');
 
     response.json({
         booking: result
