@@ -26,6 +26,9 @@ app.use('/users', UserController);
 const WorkerController = require('./controllers/WorkerController');
 app.use('/staff', WorkerController); 
 
+const PoolController = require('./controllers/PoolController');
+app.use('/pool', PoolController); 
+
 module.exports={
     app
 }
