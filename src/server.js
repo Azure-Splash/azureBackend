@@ -30,7 +30,7 @@ const PoolController = require('./controllers/PoolController');
 app.use('/pools', PoolController); 
 
 const BookingController = require('./controllers/BookingController');
-app.use('bookings', BookingController);
+app.use('/bookings', BookingController);
 
 module.exports={
     app
