@@ -73,6 +73,22 @@ databaseConnect().then(async () => {
         time: "3pm"
     });
 
+    let newBooking1 = await Booking.create({
+        user: newUser._id,
+        pool: newOutdoorPool._id,
+        lane: "6",
+        date: "12/12/23",
+        time: "3pm"
+    });
+
+    let newBooking2 = await Booking.create({
+        user: newWorker._id,
+        pool: newIndoorPool._id,
+        lane: "4",
+        date: "1/12/23",
+        time: "1pm"
+    });
+
 }).then(async () => {
 
 })
