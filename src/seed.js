@@ -18,7 +18,7 @@ databaseConnect().then(async () => {
         password: "password",
         phoneNumber:"0404999222",
         age: "45",
-        surburb: "Burleigh",
+        suburb: "Burleigh",
         isAdmin: "true"
     });
     
@@ -30,7 +30,7 @@ databaseConnect().then(async () => {
         password: "password12",
         phoneNumber:"0401438902",
         age: "26",
-        surburb: "Mermaid Water",
+        suburb: "Mermaid Water",
     });
 
     let newWorker = await Worker.create({
@@ -41,7 +41,7 @@ databaseConnect().then(async () => {
         password: "password",
         phoneNumber:"0402663123",
         age: "30",
-        surburb: "Miami",
+        suburb: "Miami",
         isAdmin: "false"
     });
 
