@@ -23,6 +23,9 @@ app.get("/", (request,response)=>{
 const UserController = require('./controllers/UserController');
 app.use('/users', UserController); 
 
+const WorkerController = require('./controllers/WorkerController');
+app.use('/staff', WorkerController); 
+
 module.exports={
     app
 }
