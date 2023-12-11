@@ -11,6 +11,7 @@ const PoolSchema = new Schema({
     numberOfLanes:{
         type: Number,
         required: true,
+        unique: false
     }
 
 
