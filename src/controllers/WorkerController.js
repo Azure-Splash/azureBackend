@@ -44,10 +44,10 @@ router.post("/", async (request, response) => {
 
 // POST to /staff/admin/login
 router.post("/admin/login", async (request, response) => {
-	// Find user by provided email
+	// Find worker by provided email
 	let targetWorker = await Worker.findOne({email: request.body.email}).catch(error => error);
 
-	// Check if user provided the correct password
+	// Check if the  provided is  correct password
 	let isPasswordCorrect = await comparePassword(request.body.password, targetWorker.password);
 
 	if (!isPasswordCorrect){

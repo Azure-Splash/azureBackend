@@ -9,7 +9,7 @@ async function comparePassword(plaintextPassword, hashedPassword) {
 	return doesPasswordMatch;
 }
 
-function generateJwt(userId){
+function generateJwt(workerId){
 
 	let newJwt = jwt.sign(
 		// Payload
