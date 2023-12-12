@@ -42,13 +42,13 @@ router.post("/", async (request, response) => {
 });
 
 
-// POST to /staff/login
-router.post("/login", async (request, response) => {
+// POST to /staff/admin/login
+router.post("/admin/login", async (request, response) => {
 	// Find user by provided email
 	let targetWorker = await Worker.findOne({email: request.body.email}).catch(error => error);
 
 	// Check if user provided the correct password
-	let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password);
+	let isPasswordCorrect = await comparePassword(request.body.password, targetWorker.password);
 
 	if (!isPasswordCorrect){
 		response.status(403).json({error:"You are not authorised to do this!"});
