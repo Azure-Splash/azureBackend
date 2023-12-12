@@ -51,6 +51,20 @@ const WorkerSchema = new Schema({
     }
 });
 
+//  pre-hook
+WorkerSchema.pre(
+	'save',
+	async function (next) {
+	  const worker = this;
+	  // If password wasn't changed to plaintext, skip to next function.
+	  if (!worker.isModified('password')) return next();
+	  // If password was changed, assume it was changed to plaintext and hash it.
+	  const hash = await bcrypt.hash(this.password, 10);
+	  this.password = hash;
+	  next();
+	}
+);
+
 const Worker = mongoose.model('Worker', WorkerSchema);
 
 module.exports={

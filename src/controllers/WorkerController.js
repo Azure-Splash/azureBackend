@@ -1,5 +1,6 @@
 const express = require('express');
 const { Worker } = require('../models/WorkersModel');
+const { comparePassword, generateJwt } = require('../functions/workerAuthFunctions');
 const router = express.Router();
 
 
@@ -41,27 +42,25 @@ router.post("/", async (request, response) => {
 });
 
 
-// POST localhost:3000/users/login
-// router.post("/login", async (request, response) => {
-// 	// Find user by provided username 
-// 	let targetUser = await User.findOne({username: request.body.username}).catch(error => error);
+// POST to /staff/login
+router.post("/login", async (request, response) => {
+	// Find user by provided email
+	let targetWorker = await Worker.findOne({email: request.body.email}).catch(error => error);
 
-// 	// Check if user provided the correct password
-// 	let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password);
+	// Check if user provided the correct password
+	let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password);
 
-// 	if (!isPasswordCorrect){
-// 		response.status(403).json({error:"You are not authorised to do this!"});
-// 	}
+	if (!isPasswordCorrect){
+		response.status(403).json({error:"You are not authorised to do this!"});
+	}
+	let freshJwt = generateJwt(targetWorker._id.toString());
 
-// 	// If they provided the correct, generate a JWT
-// 	let freshJwt = generateJwt(targetUser._id.toString());
+	// respond with the JWT 
+	response.json({
+		jwt: freshJwt
+	});
 
-// 	// respond with the JWT 
-// 	response.json({
-// 		jwt: freshJwt
-// 	});
-
-// });
+});
 
 // update worker
 // does not overwrite or remove any unmentioned properties
