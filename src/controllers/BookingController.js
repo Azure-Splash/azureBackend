@@ -15,7 +15,7 @@ router.get("/admin/all", async (request, response) => {
 });
 
 // find booking by date
-router.get('/bookings/:date', async(request, response) => {
+router.get('/admin/:date', async(request, response) => {
 	let result = await Booking.find({date: request.params.date}).populate('user pool', '-password').catch(error => error);
 
 	response.json({
