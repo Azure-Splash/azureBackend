@@ -53,8 +53,6 @@ router.post("/login", async (request, response) => {
 	if (!isPasswordCorrect){
 		response.status(403).json({error:"You are not authorised to do this!"});
 	}
-
-	// If they provided the correct, generate a JWT
 	let freshJwt = generateJwt(targetUser._id.toString());
 
 	// respond with the JWT 
