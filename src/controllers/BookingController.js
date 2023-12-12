@@ -43,7 +43,7 @@ router.get("/admin/pool/:poolId", async (request, response) => {
 
 // create a booking
 router.post("/", async (request, response) => {
-	let newWorker = await Booking.create(request.body).catch(error => error);
+	let newBooking = await Booking.create(request.body).catch(error => error);
 
     response.json(newBooking);
 });
