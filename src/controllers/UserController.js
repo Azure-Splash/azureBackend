@@ -36,13 +36,15 @@ router.get("/name/:lastName", async (request, response) => {
 router.post("/", async (request, response) => {
 	let newUser = await User.create(request.body).catch(error => error);
 
-    response.json(newUser);
+    response.json({
+		user: newUser
+	});
 });
 
 
 // POST to /users/login
 router.post("/login", async (request, response) => {
-	// Find user by provided username 
+	// Find user by provided email
 	let targetUser = await User.findOne({email: request.body.email}).catch(error => error);
 
 	// Check if user provided the correct password
