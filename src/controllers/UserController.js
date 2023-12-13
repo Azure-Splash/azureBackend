@@ -16,8 +16,7 @@ router.get("/all", async (request, response) => {
 
 // find one user by id
 router.get("/one/:id", async (request, response) => {
-	let result = await User.findOne({_id: request.params.id}).populate('-password').catch(error => error);
-
+	let result = await User.findOne({_id: request.params.id});
 	response.json({
 		user: result
 	});
@@ -25,7 +24,7 @@ router.get("/one/:id", async (request, response) => {
 
 // find user by last name
 router.get("/name/:lastName", async (request, response) => {
-	let result = await User.find({lastName: request.params.lastName}).populate('-password').catch(error => error);
+	let result = await User.find({lastName: request.params.lastName});
 
 	response.json({
 		user: result
