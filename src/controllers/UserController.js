@@ -10,7 +10,7 @@ async function authenticate(request, response, next) {
 	try {
 	  const token = request.header("Authorization").replace("Bearer ", "");
 	  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-	  const worker = await Worker.findOne({ _id: decoded._id });
+	  const worker = await Worker.findOne({ _id: decoded.isAdmin });
 	  if (!worker) {
 		throw new Error();
 	  }
