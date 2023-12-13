@@ -16,7 +16,7 @@ function generateJwt(workerId){
 		{workerId}, 
 
 		// Secret key for server-only verification
-		process.env.JWT_KEY,
+		process.env.WORKER_JWT_KEY,
 
 		// Options
 		{
