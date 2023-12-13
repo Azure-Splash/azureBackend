@@ -6,15 +6,15 @@ const { comparePassword, generateJwt } = require('../functions/userAuthFunctions
 
 // Middleware function to authenticate the user making the request.
 // Verifies the JWT from the Authorization header and attaches the user to the request object.
-async function authenticate(req, res, next) {
+async function authenticate(request, response, next) {
 	try {
-	  const token = req.header("Authorization").replace("Bearer ", "");
+	  const token = request.header("Authorization").replace("Bearer ", "");
 	  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-	  const user = await User.findOne({ _id: decoded._id });
+	  const user = await Worker.findOne({ _id: decoded._id });
 	  if (!user) {
 		throw new Error();
 	  }
-	  req.user = user;
+	  req.user = worker;
 	  next();
 	} catch (e) {
 	  res.status(401).json({ message: "Please authenticate" });
