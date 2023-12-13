@@ -17,7 +17,7 @@ router.get("/all", async (request, response) => {
 
 // find one user by id
 // workers only
-router.get("/one/:id",authenticate, async (request, response) => {
+router.get("/one/:id", async (request, response) => {
 	let result = await User.findOne({_id: request.params.id}).populate('-password');
 
 	response.json({
