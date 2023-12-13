@@ -1,5 +1,6 @@
 const express = require('express');
 const { User } = require('../models/UserModel');
+const { Worker } = require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
 
@@ -12,7 +13,6 @@ router.get("/all", async (request, response) => {
 	});
 
 });
-
 
 
 // find one user by id
