@@ -5,7 +5,7 @@ const { comparePassword, generateJwt } = require('../functions/userAuthFunctions
 
 router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	let result = await User.find({});
+	let result = await User.find({}).populate('user pool', '-password -numberOfLanes').catch(error => error);;
 
 	response.json({
 		user: result
@@ -13,15 +13,10 @@ router.get("/all", async (request, response) => {
 
 });
 
-router.get("/all", authenticate, async (req, res) => {
-	const users = await User.find().select("-password");
-  
-	res.json(users);
-  });
 
 // find one user by id
-router.get("/one/:id",authenticate, async (request, response) => {
-	let result = await User.findOne({_id: request.params.id});
+router.get("/one/:id", async (request, response) => {
+	let result = await User.findOne({_id: request.params.id}).populate('user pool', '-password -numberOfLanes').catch(error => error);;
 
 	response.json({
 		user: result
@@ -30,7 +25,7 @@ router.get("/one/:id",authenticate, async (request, response) => {
 
 // find user by last name
 router.get("/name/:lastName", async (request, response) => {
-	let result = await User.find({lastName: request.params.lastName});
+	let result = await User.find({lastName: request.params.lastName}).populate('user pool', '-password -numberOfLanes').catch(error => error);;
 
 	response.json({
 		user: result
