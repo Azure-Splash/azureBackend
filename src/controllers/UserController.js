@@ -13,9 +13,15 @@ router.get("/all", async (request, response) => {
 
 });
 
+
+
 // find one user by id
-router.get("/one/:id", async (request, response) => {
-	let result = await User.findOne({_id: request.params.id});
+// workers only
+router.get("/one/:id",authenticate, async (request, response) => {
+	if (!req.worker.isAdmin) {
+		return res.status(403).json({ message: "Unauthorized" });
+	  }
+	let result = await User.findOne({_id: request.params.id}).populate('-password');
 
 	response.json({
 		user: result
