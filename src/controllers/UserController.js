@@ -1,30 +1,9 @@
 const express = require('express');
 const { User } = require('../models/UserModel');
-const { Worker } = require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
 
-// Middleware function to authenticate the user making the request.
-// Verifies the JWT from the Authorization header and attaches the user to the request object.
-async function authenticate(request, response, next) {
-	try {
-	  const token = request.header("Authorization").replace("Bearer ", "");
-	  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-	  const worker = await Worker.findOne({ _id: decoded.isAdmin });
-	  if (!worker) {
-		throw new Error();
-	  }
-	  req.worker = worker;
-	  next();
-	} catch (e) {
-	  response.status(401).json({ message: "Please authenticate" });
-	}
-  }
-
-router.get("/all",authenticate, async (request, response) => {
-	if (!req.worker.isAdmin) {
-		return res.status(403).json({ message: "Unauthorized" });
-	  }
+router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
 	let result = await User.find({});
 
@@ -34,12 +13,15 @@ router.get("/all",authenticate, async (request, response) => {
 
 });
 
+router.get("/all", authenticate, async (req, res) => {
+	const users = await User.find().select("-password");
+  
+	res.json(users);
+  });
 
 // find one user by id
-// workers only
-router.get("/one/:id", async (request, response) => {
-
-	let result = await User.findOne({_id: request.params.id}).populate('-password');
+router.get("/one/:id",authenticate, async (request, response) => {
+	let result = await User.findOne({_id: request.params.id});
 
 	response.json({
 		user: result
