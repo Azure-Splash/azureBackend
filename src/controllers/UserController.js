@@ -4,7 +4,27 @@ const { Worker } = require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
 
-router.get("/all", async (request, response) => {
+// Middleware function to authenticate the user making the request.
+// Verifies the JWT from the Authorization header and attaches the user to the request object.
+async function authenticate(req, res, next) {
+	try {
+	  const token = req.header("Authorization").replace("Bearer ", "");
+	  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+	  const user = await User.findOne({ _id: decoded._id });
+	  if (!user) {
+		throw new Error();
+	  }
+	  req.user = user;
+	  next();
+	} catch (e) {
+	  res.status(401).json({ message: "Please authenticate" });
+	}
+  }
+
+router.get("/all",authenticate, async (request, response) => {
+	if (!req.worker.isAdmin) {
+		return res.status(403).json({ message: "Unauthorized" });
+	  }
 	// Empty object in .find() means get ALL documents
 	let result = await User.find({});
 
@@ -18,6 +38,7 @@ router.get("/all", async (request, response) => {
 // find one user by id
 // workers only
 router.get("/one/:id", async (request, response) => {
+
 	let result = await User.findOne({_id: request.params.id}).populate('-password');
 
 	response.json({
