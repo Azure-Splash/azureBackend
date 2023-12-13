@@ -57,7 +57,7 @@ router.post("/admin/login", async (request, response) => {
 
 	// respond with the JWT 
 	response.json({
-		jwt: freshJwt
+		jwt: freshJwt  
 	});
 
 });
