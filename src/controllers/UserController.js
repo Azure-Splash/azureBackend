@@ -17,7 +17,7 @@ async function authenticate(request, response, next) {
 	  req.worker = worker;
 	  next();
 	} catch (e) {
-	  res.status(401).json({ message: "Please authenticate" });
+	  response.status(401).json({ message: "Please authenticate" });
 	}
   }
 
