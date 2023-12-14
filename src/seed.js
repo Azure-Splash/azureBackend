@@ -11,7 +11,7 @@ databaseConnect().then(async () => {
 
 	console.log("Creating seed data!");
 
-    // Admin user vis Worker model
+    // Admin user via Worker model
     let newAdmin = await Worker.create({
 
         firstName: "Stacy",

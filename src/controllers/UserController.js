@@ -2,8 +2,9 @@ const express = require('express');
 const { User } = require('../models/UserModel');
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
+const { authAdmin } = require('../middleware/admin_auth')
 
-router.get("/all", async (request, response) => {
+router.get("/all", authAdmin, async (request, response) => {
 	// Empty object in .find() means get ALL documents
 	let result = await User.find({});
 
