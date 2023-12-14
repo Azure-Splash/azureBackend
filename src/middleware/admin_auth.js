@@ -3,7 +3,7 @@ const {Worker}  = require('../models/WorkersModel.js');
 
 // Middleware to check if the user is an admin
 const authAdmin = async (request, response, next) => {
-    const isAdmin = request.worker.isaAdmin; // Assuming you have middleware to set req.user with the authenticated user
+    const isAdmin = request.worker.id; // Assuming you have middleware to set req.user with the authenticated user
   
     try {
       const worker = await Worker.findById(isAdmin);
