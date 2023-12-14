@@ -8,7 +8,7 @@ const authAdmin = async (request, response, next) => {
     try {
       const worker = await Worker.findById(isAdmin);
       
-      if (!worker || !Worker.authAdmin) {
+      if (!worker || !worker.authAdmin) {
         return response.status(403).json({ message: 'Permission denied. Admins only.' });
       }
   
@@ -20,4 +20,4 @@ const authAdmin = async (request, response, next) => {
     }
   };
 
-  module.exports= { authAdmin}
+  module.exports= { authAdmin }
