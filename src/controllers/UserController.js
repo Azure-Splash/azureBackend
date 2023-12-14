@@ -6,7 +6,7 @@ const { authAdmin } = require('../middleware/admin_auth')
 
 router.get("/all", authAdmin, async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	let result = await User.find({});
+	let result = await User.find({}).catch(error => error);
 
 	response.json({
 		user: result
