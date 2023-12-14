@@ -1,5 +1,4 @@
-const {Worker}  = require('../models/WorkersModel.js')
-
+const {Worker}  = require('../models/WorkersModel.js');
 
 
 // Middleware to check if the user is an admin
@@ -7,9 +6,9 @@ const authAdmin = async (request, response, next) => {
     const userId = req.worker.isaAdmin; // Assuming you have middleware to set req.user with the authenticated user
   
     try {
-      const user = await User.findById(worker.isAdmin);
+      const worker = await User.findById(worker.isAdmin);
       
-      if (!user || !user.authAdmin) {
+      if (!worker || !Worker.authAdmin) {
         return response.status(403).json({ message: 'Permission denied. Admins only.' });
       }
   
