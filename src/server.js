@@ -11,7 +11,7 @@ app.use(express.json());
 // }
 // app.use(cors(corsOptions));
 
-// app.use(express.json());
+app.use(express.json());
 
 app.get("/", (request,response)=>{
     response.json({
@@ -19,6 +19,12 @@ app.get("/", (request,response)=>{
     })
 });
 
+// enable cors
+app.use(function(_, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 const UserController = require('./controllers/UserController');
 app.use('/users', UserController); 
