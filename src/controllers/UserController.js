@@ -19,9 +19,9 @@ try {
 	}
   });
   
-	response.json({
-		user: result
-	});
+	// response.json({
+	// 	user: result
+	// });
 // });
 
 // app.get('/admin-users', async (req, res) => {
