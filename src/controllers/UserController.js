@@ -3,16 +3,11 @@ const { User } = require('../models/UserModel');
 const { Worker } =require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
-// const { validationResult } = require('express-validator');
 
 
+// get all users
 router.get("/all", async (request, response) => {
-	// Empty object in .find() means get ALL documents
-	const errors = validationResult(request);
 
-	if (!errors.isEmpty()) {
-	  return res.status(400).json({ errors: errors.array() });
-	}
 	let result = await User.find({});
 
 
@@ -21,19 +16,7 @@ router.get("/all", async (request, response) => {
 	});
 });
 
-// Route handling
-// app.post('/some-protected-route', (req, res) => {
-// 	const errors = validationResult(req);
-  
-// 	if (!errors.isEmpty()) {
-// 	  return res.status(400).json({ errors: errors.array() });
-// 	}
-  
-// 	// If validation passes, handle the request
-// 	res.json({ message: 'Request successful for admin users.' });
-//   });
 
-//   11111```````````````````````````````````````````````````
 
 
 // find one user by id
