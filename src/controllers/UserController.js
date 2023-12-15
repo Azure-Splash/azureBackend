@@ -3,6 +3,7 @@ const { User } = require('../models/UserModel');
 const { Worker } =require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
+const { body, validationResult } = require('express-validator');
 
 
 router.get("/all", async (request, response) => {
