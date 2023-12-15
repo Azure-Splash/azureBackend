@@ -8,13 +8,14 @@ const { validationResult } = require('express-validator');
 
 router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	const errors = validationResult(request);
-  
-	if (!errors.isEmpty()) {
-	  return response.status(400).json({ errors: errors.array() });
-	}
-  
-	// If validation passes, handle the request
+	app.use(
+		body(Worker.isadmin).custom(value => {
+		  if (value !== 'true') {
+			throw new Error('Only admin users are allowed.');
+		  }
+		  return true;
+		})
+	  );
 	let result = await User.find({});
 	response.json({ message: 'Request successful for admin users.' });
 
