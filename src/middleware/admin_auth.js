@@ -1,23 +1,19 @@
-const {Worker}  = require('../models/WorkersModel.js');
+const express = require('express');
+const { body, validationResult } = require('express-validator');
 
+const app = express();
 
-// Middleware to check if the user is an admin
-const authAdmin = async (request, response, next) => {
-    const workerId = request.worker.isAdmin; // Assuming you have middleware to set req.user with the authenticated user
-  
-    try {
-      const worker = await Worker.findById(workerId);
-      
-      if (!worker || !worker.authAdmin) {
-        return response.status(403).json({ message: 'Permission denied. Admins only.' });
-      }
-  
-      // User is an admin, proceed to the next middleware or route handler
-      next();
-    } catch (error) {
-      console.error('Error checking admin status:', error);
-      response.status(500).json({ message: 'Internal server error' });
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Validation middleware
+app.use(
+  body('role').custom(value => {
+    if (value !== 'admin') {
+      throw new Error('Only admin users are allowed.');
     }
-  };
+    return true;
+  })
+);
 
-  module.exports= { authAdmin }
+  module.exports= { validationResult }
