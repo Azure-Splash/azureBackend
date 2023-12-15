@@ -7,32 +7,34 @@ const { comparePassword, generateJwt } = require('../functions/userAuthFunctions
 
 
 router.get("/all", async (request, response) => {
-	// Empty object in .find() means get ALL documents
-	const errors = validationResult(request);
+try {
+	  // Assuming you have a 'role' field in your User schema
+	  const adminUsers = await Worker.find({ isAdmin: 'true' });
 
-	if (!errors.isEmpty()) {
-	  return res.status(400).json({ errors: errors.array() });
+	// let result = await User.find({});
+	  res.json(adminUsers);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ message: 'Internal Server Error' });
 	}
-	let result = await User.find({});
-
-
+  });
+  let result = await User.find({});
 	response.json({
 		user: result
 	});
-});
+// });
 
-// Route handling
-// app.post('/some-protected-route', (req, res) => {
-// 	const errors = validationResult(req);
+// app.get('/admin-users', async (req, res) => {
+// 	try {
+// 	  // Assuming you have a 'role' field in your User schema
+// 	  const adminUsers = await User.find({ role: 'admin' });
   
-// 	if (!errors.isEmpty()) {
-// 	  return res.status(400).json({ errors: errors.array() });
+// 	  res.json(adminUsers);
+// 	} catch (error) {
+// 	  console.error(error);
+// 	  res.status(500).json({ message: 'Internal Server Error' });
 // 	}
-  
-// 	// If validation passes, handle the request
-// 	res.json({ message: 'Request successful for admin users.' });
 //   });
-
 //   11111```````````````````````````````````````````````````
 
 
