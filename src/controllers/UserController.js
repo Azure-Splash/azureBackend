@@ -9,6 +9,10 @@ const { comparePassword, generateJwt } = require('../functions/userAuthFunctions
 router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
 	const errors = validationResult(request);
+
+	if (!errors.isEmpty()) {
+	  return res.status(400).json({ errors: errors.array() });
+	}
 	let result = await User.find({});
 
 
