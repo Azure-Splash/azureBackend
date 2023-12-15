@@ -7,20 +7,19 @@ const { comparePassword, generateJwt } = require('../functions/userAuthFunctions
 
 router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	let result = await User.find({});
-		const errors = validationResult(req);
+	const errors = validationResult(req);
   
 	if (!errors.isEmpty()) {
 	  return res.status(400).json({ errors: errors.array() });
 	}
   
 	// If validation passes, handle the request
-	res.json({ message: 'Request successful for admin users.' });
-  });
+	let result = await User.find({});
 
 	response.json({
 		user: result
 	});
+});
 
 // Route handling
 // app.post('/some-protected-route', (req, res) => {
