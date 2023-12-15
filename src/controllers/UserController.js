@@ -16,6 +16,7 @@ router.get("/all", async (request, response) => {
   
 	// If validation passes, handle the request
 	let result = await User.find({});
+	resquest.json({ message: 'Request successful for admin users.' });
 
 	response.json({
 		user: result
