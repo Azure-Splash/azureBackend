@@ -8,7 +8,7 @@ const { body, validationResult } = require('express-validator');
 
 router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	const errors = validationResult(req);
+	const errors = validationResult(request);
   
 	if (!errors.isEmpty()) {
 	  return res.status(400).json({ errors: errors.array() });
