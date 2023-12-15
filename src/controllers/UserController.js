@@ -12,10 +12,10 @@ try {
 	  const adminUsers = await Worker.find({ isAdmin: 'true' });
 
 	// let result = await User.find({});
-	  res.json(adminUsers);
+	  response.json(adminUsers);
 	} catch (error) {
 	  console.error(error);
-	  res.status(500).json({ message: 'Internal Server Error' });
+	  response.status(500).json({ message: 'Internal Server Error' });
 	}
   });
   
