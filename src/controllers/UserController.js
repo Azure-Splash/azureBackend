@@ -18,7 +18,7 @@ try {
 	  res.status(500).json({ message: 'Internal Server Error' });
 	}
   });
-  let result = await User.find({});
+  
 	response.json({
 		user: result
 	});
