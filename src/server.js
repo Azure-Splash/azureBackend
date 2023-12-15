@@ -1,7 +1,18 @@
 const express = require('express')
 const app = express();
+const cors = require('cors');
 
-app.use(express.json());
+const helmet = require('helmet');
+
+app.use(helmet());
+app.use(helmet.permittedCrossDomainPolicies());
+app.use(helmet.referrerPolicy());
+app.use(helmet.contentSecurityPolicy({
+    directives:{
+        defaultSrc:["'self'"]
+    }
+}));
+
 
 // const cors = require('cors');
 // const corsOptions = {
@@ -25,6 +36,8 @@ app.use(function(_, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+
+// add controllers
 
 const UserController = require('./controllers/UserController');
 app.use('/users', UserController); 
