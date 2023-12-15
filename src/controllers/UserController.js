@@ -3,21 +3,14 @@ const { User } = require('../models/UserModel');
 const { Worker } =require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
-const { validationResult } = require('express-validator');
+// const { validationResult } = require('express-validator');
 
 
 router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	app.use(
-		body(Worker.isadmin).custom(value => {
-		  if (value !== 'true') {
-			throw new Error('Only admin users are allowed.');
-		  }
-		  return true;
-		})
-	  );
+
 	let result = await User.find({});
-	response.json({ message: 'Request successful for admin users.' });
+
 
 	response.json({
 		user: result
