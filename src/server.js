@@ -22,7 +22,9 @@ app.use(helmet.contentSecurityPolicy({
 // }
 // app.use(cors(corsOptions));
 
+// Configure API data receiving & sending
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
 app.get("/", (request,response)=>{
     response.json({
