@@ -11,7 +11,7 @@ router.get("/all", async (request, response) => {
 	const errors = validationResult(request);
   
 	if (!errors.isEmpty()) {
-	  return res.status(400).json({ errors: errors.array() });
+	  return response.status(400).json({ errors: errors.array() });
 	}
   
 	// If validation passes, handle the request
