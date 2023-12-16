@@ -3,10 +3,11 @@ const { User } = require('../models/UserModel');
 const { Worker } =require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
+const { validationResult } = require('express-validator');
 
 
 // get all users
-router.get("/all", async (request, response) => {
+router.get("/all", validationResult, async (request, response) => {
 
 	let result = await User.find({});
 
