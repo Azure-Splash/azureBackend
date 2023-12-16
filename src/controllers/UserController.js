@@ -3,10 +3,11 @@ const { User } = require('../models/UserModel');
 const { Worker } =require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
+const { app } = require('../server');
 
 
 // get all users
-router.get("/all", async (request, response) => {
+app.get("/all", validateBasicAuth, async (request, response) => {
 
 	let result = await User.find({});
 
@@ -16,7 +17,13 @@ router.get("/all", async (request, response) => {
 	});
 });
 
+// app.get('/encryptAuthData', validateBasicAuth, (request, response) => {
+//     let encryptedAuthResult = encryptString(JSON.stringify(request.userAuthDetails));
 
+//     response.json({
+//         user: encryptedAuthResult
+//     });
+// });
 
 
 // find one user by id
