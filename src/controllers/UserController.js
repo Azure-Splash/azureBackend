@@ -7,7 +7,7 @@ const { app } = require('../server');
 
 
 // get all users
-app.get("/all", validateBasicAuth, async (request, response) => {
+router.get("/all", validateBasicAuth, async (request, response) => {
 
 	let result = await User.find({});
 
