@@ -53,6 +53,15 @@ app.use('/pools', PoolController);
 const BookingController = require('./controllers/BookingController');
 app.use('/bookings', BookingController);
 
+app.use(
+    body(Worker.isadmin).custom(value => {
+      if (value !== 'true') {
+        throw new Error('Only admin users are allowed.');
+      }
+      return true;
+    })
+  );
+
 // 404 error route handling
 app.get("*", (request, response) => {
     response.status(404).json({
