@@ -6,7 +6,7 @@ const router = express.Router();
 // get all booking by id
 router.get("/admin/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	let result = await Booking.find({});
+	let result = await Booking.find({}).populate('user pool', '-password');
 
 	response.json({
 		booking: result
