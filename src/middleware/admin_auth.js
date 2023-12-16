@@ -18,8 +18,8 @@ const validateBasicAuth = (request, response, next) => {
   let decodedAuth = Buffer.from(authHeader, 'base64').toString('ascii');
 
   // Convert it into a usable object.
-  let objDecodedAuth = {username: '', password: ''};
-  objDecodedAuth.username = decodedAuth.substring(0, decodedAuth.indexOf(":"));
+  let objDecodedAuth = {email: '', password: ''};
+  objDecodedAuth.email = decodedAuth.substring(0, decodedAuth.indexOf(":"));
   objDecodedAuth.password = decodedAuth.substring(decodedAuth.indexOf(":") + 1);
 
   // Attach the object to the request
