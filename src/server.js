@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express();
 const { body } = require('express-validator');
+const {Worker} = require('./models/WorkersModel')
 const cors = require('cors');
 
 const helmet = require('helmet');
