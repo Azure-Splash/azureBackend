@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/all", async (request, response) => {
 	// Empty object in .find() means get ALL documents
-	let result = await Worker.find({});
+	let result = await Worker.find({}); 
 
 	response.json({
 		staff: result

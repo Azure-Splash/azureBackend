@@ -53,6 +53,13 @@ app.use('/pools', PoolController);
 const BookingController = require('./controllers/BookingController');
 app.use('/bookings', BookingController);
 
+app.get("*", (request, response) => {
+    response.status(404).json({
+        message: "No route with that path found!",
+        attemptedPath: request.path,
+    });
+});
+
 module.exports={
     app
 }
