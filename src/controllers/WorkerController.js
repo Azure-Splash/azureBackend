@@ -1,5 +1,5 @@
 const express = require('express');
-const { Worker } = require('../models/WorkersModel');
+const { User } = require('../models/WorkersModel');
 const { comparePassword, generateJwt } = require('../functions/workerAuthFunctions');
 const router = express.Router();
 
