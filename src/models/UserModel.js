@@ -46,12 +46,10 @@ const UserSchema = new Schema({
         required: true,
         unique: false
     },
-    role:{
-        type: String,
-        required: true,
-        unique: false,
-        default: 'customer'
-    }
+    role: {
+        type: mongoose.Types.ObjectId,
+        ref: "Role",
+    },
 });
 
 //  pre-hook
