@@ -1,8 +1,9 @@
 const express = require('express')
 const app = express();
 const { body } = require('express-validator');
-const {Worker} = require('./models/WorkersModel')
 const cors = require('cors');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 const helmet = require('helmet');
 
@@ -38,7 +39,27 @@ function decryptObject(data){
     return JSON.parse(decryptString(data));
 }
 
-
+passport.use(
+    new LocalStrategy(async (email, password, done) => {
+      try {
+        const user = await User.findOne({ email });
+        if (!user) {
+          return done(null, false, { message: 'Incorrect email.' });
+        }
+        const isValidPassword = await user.isValidPassword(password);
+        if (!isValidPassword) {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        const role = await Role.findOne({ name: user.role });
+        if (!role) {
+          return done(null, false, { message: 'Invalid role.' });
+        }
+        return done(null, user, { role: role });
+      } catch (err) {
+        return done(err);
+      }
+    })
+  );
 // const cors = require('cors');
 // const corsOptions = {
 // 	//			frontend localhost,  frontend deployed
@@ -78,14 +99,7 @@ app.use('/pools', PoolController);
 const BookingController = require('./controllers/BookingController');
 app.use('/bookings', BookingController);
 
-app.use(
-    body(Worker.isadmin).custom(value => {
-      if (value !== 'true') {
-        throw new Error('Only admin users are allowed.');
-      }
-      return true;
-    })
-  );
+
 
 // 404 error route handling
 app.get("*", (request, response) => {

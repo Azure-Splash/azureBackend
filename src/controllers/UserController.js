@@ -1,9 +1,10 @@
 const express = require('express');
 const { User } = require('../models/UserModel');
-const { Worker } =require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
 const { isAdmin } = require('../middleware/admin_auth');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 
 
@@ -18,7 +19,7 @@ const { isAdmin } = require('../middleware/admin_auth');
 // 	});
 // });
 
-router.gete("/all", passport.authenticate('jwt', { session: false }), isAdmin, async (request, response) => {
+router.get("/all", passport.authenticate('jwt', { session: false }), isAdmin, async (request, response) => {
 		let result = await User.find({});
 
 
