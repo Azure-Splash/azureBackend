@@ -1,9 +1,11 @@
 
-const isAdmin = (req, res, next) => {
-  if (req.user.role.name === 'admin') {
+const { User } = require('../models/UserModel');
+
+const isAdmin = (request, response, next) => {
+  if (request.user.role.name === 'admin') {
     return next();
   }
-  return res.status(403).send('Forbidden');
+  return response.status(403).send('Forbidden');
 };
 
 module.exports={ isAdmin };
