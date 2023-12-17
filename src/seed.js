@@ -3,10 +3,9 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 const { databaseConnect } = require('./database');
 const { User } = require('./models/UserModel');
-// const { Worker } = require('./models/WorkersModel');
 const { Pool } = require('./models/PoolModel');
 const { Booking } = require('./models/BookingModel');
-const Role = require('./models/RolesModel');
+const { Role } = require('./models/RolesModel');
 
 
 databaseConnect().then(async () => {
@@ -41,7 +40,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0404999222",
         age: "45",
         suburb: "Burleigh",
-        role: "admin"
+        role: adminRole._id
     });
 
     // User Model
@@ -55,6 +54,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0401438902",
         age: "26",
         suburb: "Mermaid Water",
+        role: workerRole._id
     });
 
     let newUser1 = await User.create({
@@ -66,7 +66,19 @@ databaseConnect().then(async () => {
         phoneNumber:"0402663123",
         age: "30",
         suburb: "Miami",
-        role: "Worker"
+        role: customerRole._id
+    });
+
+    let newUser2 = await User.create({
+
+        firstName: "John",
+        lastName: "Peters",
+        email: "john@gmail.com",
+        password: "password12",
+        phoneNumber:"0401438904",
+        age: "34",
+        suburb: "Adelaide",
+        role: customerRole._id
     });
 
     // Pool Model
