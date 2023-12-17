@@ -69,6 +69,7 @@ router.post("/login", async (request, response) => {
 		response.status(403).json({error:"You are not authorised to do this!"});
 	}
 	let freshJwt = generateJwt(targetUser._id.toString());
+	
 
 	// respond with the JWT 
 	response.json({
