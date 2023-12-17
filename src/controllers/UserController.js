@@ -17,7 +17,7 @@ passport.use(
 		if (!isValidPassword) {
 		  return done(null, false, { message: 'Incorrect password.' });
 		}
-		const role = await Role.findOne({ name: user.role });
+		const role = await role.findOne({ name: user.role });
 		if (!role) {
 		  return done(null, false, { message: 'Invalid role.' });
 		}
