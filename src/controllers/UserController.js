@@ -2,16 +2,16 @@ const express = require('express');
 const { User } = require('../models/UserModel');
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
-// const { isAdmin } = require('../middleware/admin_auth');
+const { isAdmin } = require('../middleware/admin_auth');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const isAdmin = (request, response, next) => {
-	if (request.user.role.name === 'admin') {
-	  return next();
-	}
-	return response.status(403).send('Forbidden');
-  };
+// const isAdmin = (request, response, next) => {
+// 	if (request.user.role.name === 'admin') {
+// 	  return next();
+// 	}
+// 	return response.status(403).send('Forbidden');
+//   };
 
 // get all users
 // router.get("/all", async (request, response) => {
