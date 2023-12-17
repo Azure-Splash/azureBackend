@@ -29,24 +29,24 @@ passport.use(
   );
 
 // get all users
-// router.get("/all", async (request, response) => {
+router.get("/all", async (request, response) => {
 
-// 	let result = await User.find({});
-
-
-// 	response.json({
-// 		user: result
-// 	});
-// });
-
-router.get("/all", passport.authenticate('jwt', { session: false }), isAdmin, async (request, response) => {
-		let result = await User.find({}).populate('role', 'name');
+	let result = await User.find({}).populate('role', 'name');
 
 
 	response.json({
 		user: result
 	});
-  });
+});
+
+// router.get("/all", passport.authenticate('jwt', { session: false }), isAdmin, async (request, response) => {
+// 		let result = await User.find({}).populate('role', 'name');
+
+
+// 	response.json({
+// 		user: result
+// 	});
+//   });
 
 
 // find one user by id
