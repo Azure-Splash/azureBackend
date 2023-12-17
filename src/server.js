@@ -90,8 +90,8 @@ app.use(function(_, res, next) {
 const UserController = require('./controllers/UserController');
 app.use('/users', UserController); 
 
-const UserController = require('./controllers/UserController');
-app.use('/staff', UserController); 
+// const UserController = require('./controllers/UserController');
+// app.use('/staff', UserController); 
 
 const PoolController = require('./controllers/PoolController');
 app.use('/pools', PoolController); 
