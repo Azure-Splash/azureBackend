@@ -24,7 +24,7 @@ const LocalStrategy = require('passport-local').Strategy;
 // );
 
 const isAdmin = (request, response, next) => {
-  if (request.user.role.name === 'admin') {
+  if (request.user.role.name === 'Admin') {
     return next();
   }
   return response.status(403).send('Forbidden');
