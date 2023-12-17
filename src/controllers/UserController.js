@@ -63,12 +63,12 @@ router.post("/login", async (request, response) => {
 	let targetUser = await User.findOne({email: request.body.email}).catch(error => error);
 
 	// Check if user provided the correct password
-	let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password).catch(error => error);
+	let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password);
 
 	if (!isPasswordCorrect){
 		response.status(403).json({error:"You are not authorised to do this!"});
 	}
-	let freshJwt = generateJwt(targetUser._id.toString()).catch(error => error);
+	let freshJwt = generateJwt(targetUser._id.toString());
 
 	// respond with the JWT 
 	response.json({
