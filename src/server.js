@@ -91,7 +91,7 @@ const UserController = require('./controllers/UserController');
 app.use('/users', UserController); 
 
 const WorkerController = require('./controllers/UserController');
-app.use('/staff', WorkerController); 
+app.use('/staff', UserController); 
 
 const PoolController = require('./controllers/PoolController');
 app.use('/pools', PoolController); 
