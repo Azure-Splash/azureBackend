@@ -36,16 +36,16 @@ router.get("/name/:lastName", async (request, response) => {
 
 // create new worker
 router.post("/", async (request, response) => {
-	let newWorker = await Worker.create(request.body).catch(error => error);
+	let newUser = await User.create(request.body).catch(error => error);
 
-    response.json(newWorker);
+    response.json(newUser);
 });
 
 
 // POST to /staff/admin/login
 router.post("/admin/login", async (request, response) => {
 	// Find worker by provided email
-	let targetWorker = await Worker.findOne({email: request.body.email}).catch(error => error);
+	let targetWorker = await User.findOne({email: request.body.email}).catch(error => error);
 
 	// Check if the  provided is  correct password
 	let isPasswordCorrect = await comparePassword(request.body.password, targetWorker.password);
