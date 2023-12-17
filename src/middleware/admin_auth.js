@@ -1,32 +1,35 @@
-const validateBasicAuth = (request, response, next) => { 
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('../models/UserModel');
 
-  // Assign the header to something easier to work with, if it exists.
-  let authHeader = request.headers["authorization"] ?? null;
+passport.use(
+  new LocalStrategy(async (email, password, done) => {
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return done(null, false, { message: 'Incorrect email.' });
+      }
+      const isValidPassword = await user.isValidPassword(password);
+      if (!isValidPassword) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      const role = await Role.findOne({ name: user.role });
+      if (!role) {
+        return done(null, false, { message: 'Invalid role.' });
+      }
+      return done(null, user, { role: role });
+    } catch (err) {
+      return done(err);
+    }
+  })
+);
 
-  // If no auth header provided, stop the request.
-  if (authHeader == null) {
-      throw new Error("No auth data detected on a request to a protected route!");
+
+const isAdmin = (req, res, next) => {
+  if (req.user.role.name === 'admin') {
+    return next();
   }
+  return res.status(403).send('Forbidden');
+};
 
-  // Confirm it's a Basic auth string, 
-  // and store only the encoded string.
-  if (authHeader.startsWith("Basic ")) {
-      authHeader = authHeader.substring(5).trim();
-  }
-
-  // Decode the string.
-  let decodedAuth = Buffer.from(authHeader, 'base64').toString('ascii');
-
-  // Convert it into a usable object.
-  let objDecodedAuth = {email: '', password: ''};
-  objDecodedAuth.email = decodedAuth.substring(0, decodedAuth.indexOf(":"));
-  objDecodedAuth.password = decodedAuth.substring(decodedAuth.indexOf(":") + 1);
-
-  // Attach the object to the request
-  request.userAuthDetails = objDecodedAuth;
-
-  // Call the next step in the server's middleware chain or go to the route's callback.
-  next();
-}
-
-module.export={ validateBasicAuth }
+module.exports={ isAdmin };

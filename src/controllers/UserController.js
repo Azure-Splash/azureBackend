@@ -3,21 +3,29 @@ const { User } = require('../models/UserModel');
 const { Worker } =require('../models/WorkersModel')
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
+const { isAdmin } = require('../middleware/admin_auth');
 
 
 
 // get all users
-router.get("/all", async (request, response) => {
+// router.get("/all", async (request, response) => {
 
-	let result = await User.find({});
+// 	let result = await User.find({});
+
+
+// 	response.json({
+// 		user: result
+// 	});
+// });
+
+router.gete("/all", passport.authenticate('jwt', { session: false }), isAdmin, async (request, response) => {
+		let result = await User.find({});
 
 
 	response.json({
 		user: result
 	});
-});
-
-
+  });
 
 
 // find one user by id

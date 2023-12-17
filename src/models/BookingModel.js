@@ -24,6 +24,7 @@ const BookingSchema = new Schema({
       type: Date,
       required: true,
       unquie: true
+      
    },
    time:{
       type: String,

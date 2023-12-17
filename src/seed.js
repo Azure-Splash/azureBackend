@@ -3,16 +3,36 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 const { databaseConnect } = require('./database');
 const { User } = require('./models/UserModel');
-const { Worker } = require('./models/WorkersModel');
+// const { Worker } = require('./models/WorkersModel');
 const { Pool } = require('./models/PoolModel');
 const { Booking } = require('./models/BookingModel');
+const Role = require('./models/RolesModel');
+
 
 databaseConnect().then(async () => {
 
 	console.log("Creating seed data!");
 
-    // Admin user via Worker model
-    let newAdmin = await Worker.create({
+
+    // Roles
+
+    let adminRole = await Role.create({
+        name: "Admin",
+        permissions: ['create', 'read', 'update', 'delete']
+    })
+
+    let customerRole = await Role.create({
+        name: "Customer",
+        permissions: ['read']
+    })
+
+    let workerRole = await Role.create({
+        name: "Worker",
+        permissions: ['create', 'read', 'update', 'delete']
+    })
+
+    // Admin user 
+    let newAdmin = await User.create({
 
         firstName: "Stacy",
         lastName: "Jones",
@@ -21,7 +41,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0404999222",
         age: "45",
         suburb: "Burleigh",
-        isAdmin: "true"
+        role: "admin"
     });
 
     // User Model
@@ -37,9 +57,7 @@ databaseConnect().then(async () => {
         suburb: "Mermaid Water",
     });
 
-    // Worker Model
-
-    let newWorker = await Worker.create({
+    let newUser1 = await User.create({
 
         firstName: "Tom",
         lastName: "Roman",
@@ -48,7 +66,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0402663123",
         age: "30",
         suburb: "Miami",
-        isAdmin: "false"
+        role: "Worker"
     });
 
     // Pool Model
@@ -82,7 +100,7 @@ databaseConnect().then(async () => {
     });
 
     let newBooking2 = await Booking.create({
-        user: newWorker._id,
+        user: newUser._id,
         pool: newIndoorPool._id,
         lane: "4",
         date: "1/12/23",
