@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
+const Schema = mongoose.Schema; 
 
-const roleSchema = new mongoose.Schema({
+const RoleSchema = new Schema({
+
   name: {
     type: String,
     required: true,
@@ -13,8 +15,11 @@ const roleSchema = new mongoose.Schema({
     unique: false
   }
 });
-const Role = mongoose.model('Role', roleSchema);
+
+
+const Role = mongoose.model('Role', RoleSchema);
 
 module.exports = {
   Role
 };
+

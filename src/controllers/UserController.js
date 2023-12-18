@@ -1,5 +1,6 @@
 const express = require('express');
 const { User } = require('../models/UserModel');
+const{ Role } = require('../models/RolesModel');
 const router = express.Router();
 const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
 const { isAdmin } = require('../middleware/admin_auth');
