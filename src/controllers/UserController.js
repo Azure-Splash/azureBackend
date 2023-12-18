@@ -22,7 +22,7 @@ passport.use(
 		if (!role) {
 		  return done(null, false, { message: 'Invalid role.' });
 		}
-		return done(null, user, { role: role });
+		return done(null, User, { role: role });
 	  } catch (err) {
 		return done(err);
 	  }
