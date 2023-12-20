@@ -47,10 +47,12 @@ const UserSchema = new Schema({
         unique: false
     },
     role: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Role", 
-        required: true
-    },
+        type: String,
+        default: 'user', // default role of 'user' 
+        enum: ['user', 'admin', 'worker'], // Enumerating possible roles to ensure valid values
+        required: true,
+        unique: false
+      },
 });
 
 //  pre-hook
@@ -66,6 +68,11 @@ UserSchema.pre(
 	  next();
 	}
 );
+
+// Password validation logic
+UserSchema.methods.isPasswordValid = function (password) {
+    return /^[a-zA-Z0-9]{8,30}$/.test(password);
+  };
 
 const User = mongoose.model('User', UserSchema);
 

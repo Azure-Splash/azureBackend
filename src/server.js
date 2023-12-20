@@ -15,12 +15,11 @@ app.use(helmet.contentSecurityPolicy({
 }));
 
 
-// const corsOptions = {
-// 	//			frontend localhost,  frontend deployed
-// 	origin: ["http://localhost:3000/","http://localhost:3000", "https://someDeployedWebsite.com"],
-// 	optionsSuccessStatus: 200
-// }
-// app.use(cors(corsOptions));
+const corsOptions = {
+	origin: ["http://localhost:3005/","http://localhost:3005", "https://azuresplash.netlify.app/"],
+	optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions));
 
 // Configure API data receiving & sending
 app.use(express.json());
@@ -59,6 +58,8 @@ app.get("*", (request, response) => {
         message: "No route with that path found!"
     });
 });
+
+
 
 
 
