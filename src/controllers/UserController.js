@@ -1,67 +1,68 @@
 const express = require('express');
 const { User } = require('../models/UserModel');
-const{ Role } = require('../models/RolesModel');
 const router = express.Router();
-const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
-const { isAdmin } = require('../middleware/admin_auth');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const { comparePassword, generateJwt, decryptString, encryptString } = require('../functions/userAuthFunctions');
+const helmet = require('helmet');
 
-
-
-passport.use(
-	new LocalStrategy(async (email, password, done) => {
-	  try {
-		const user = await User.findOne({ email });
-		if (!user) {
-		  return done(null, false, { message: 'Incorrect email.' });
-		}
-		const isValidPassword = await User.isValidPassword(password);
-		if (!isValidPassword) {
-		  return done(null, false, { message: 'Incorrect password.' });
-		}
-		const role = await Role.findOne({ name: user.role });
-		if (!role) {
-		  return done(null, false, { message: 'Invalid role.' });
-		}
-		return done(null, User, { role: role });
-	  } catch (err) {
-		return done(err);
-	  }
-	})
-  );
+const { validJWT, catchErrors}= require('../middleware/admin_auth')
 
 // get all users
-// router.get("/all", async (request, response) => {
+router.get('/all', validJWT, catchErrors, async (request, response) => {
+		let decodedJWT = request.decodedJWT;
+	
+		// Assign locally for cleaner code - but not needed.
+		let decryptedEmail = decryptString(decodedJWT.email);
+		let decryptedPassword = decryptString(decodedJWT.password);
+	
+		// To prove we got the data we're expecting:
+		console.log("Decrypted user data is: \n\t" + decryptedEmail + "\n\t" + decryptedPassword);
+	
+		// Encrypt the data again to make sure nothing unsecure is put into the new, fresh JWT
+		let encryptedEmail = encryptString(decryptedEmail);
+		let encryptedPassword = encryptString(decryptedPassword);
+	
+		let objectToTokenize = {
+			email: encryptedEmail, 
+			password: encryptedPassword
+		}
+	
 
-// 	let result = await User.find({}).populate('role', 'name');
-
-
-// 	response.json({
-// 		user: result
-// 	});
-// });
-
-router.get("/all", passport.authenticate('jwt', { session: false }), isAdmin, async (request, response) => {
+		// Passing in an object instead of doing:
+		// generateJWT({someKey:"someValue"})
+		// to make that above if condition easier to write
+		let userJwt = generateJWT(objectToTokenize);
+	
+		// The response can assume the golden happy path,
+		// since error-handling middleware would send its own response
+		// if an error were detected.
+		let responseData = {
+			message: "You are a valid user!",
+			newJWT: userJwt
+		}
 		let result = await User.find({}).populate('role', 'name');
-
-
-	response.json({
+		response.json(responseData);
+			response.json({
 		user: result
 	});
-  });
+	});
 
+  
+  // GET all users.
+  // This endpoint is accessible only to admin users.
+  // No query parameters are required.
+  
 
 // find one user by id
-router.get("/one/:id", async (request, response) => {
+router.get("/one/:id", validJWT, catchErrors, async (request, response) => {
 	let result = await User.findOne({_id: request.params.id});
+	response.json({ message: 'This route is accessible only by admins.' });
 	response.json({
 		user: result
 	});
 });
 
 // find user by last name
-router.get("/name/:lastName", async (request, response) => {
+router.get("/name/:lastName", validJWT, catchErrors, async (request, response) => {
 	let result = await User.find({lastName: request.params.lastName});
 
 	response.json({
@@ -82,29 +83,35 @@ router.post("/", async (request, response) => {
 
 
 // POST to /users/login
+
+
+
 router.post("/login", async (request, response) => {
 	// Find user by provided email
 	let targetUser = await User.findOne({email: request.body.email}).catch(error => error);
 
 	// Check if user provided the correct password
 	let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password);
-
-	if (!isPasswordCorrect){
-		response.status(403).json({error:"You are not authorised to do this!"});
-	}
-	let freshJwt = generateJwt(targetUser._id.toString());
 	
+	if (!isPasswordCorrect) {
+		response.status(403).json({error:"Incorrect Password, try again!"});
+	} else{
+	let freshJwt = generateJwt(targetUser._id.toString());
+
 
 	// respond with the JWT 
 	response.json({
 		jwt: freshJwt
 	});
+}
 
 });
 
+
+
 // update user
 // does not overwrite or remove any unmentioned properties
-router.patch("/:id", async (request, response) => {
+router.patch("/:id", validJWT, catchErrors, async (request, response) => {
 	let result = await User.findByIdAndUpdate(
 		request.params.id, 
 		request.body,
@@ -122,7 +129,7 @@ router.patch("/:id", async (request, response) => {
 
 
 // delete user by id
-router.delete("/:id", async (request, response) => {
+router.delete("/:id", validJWT, catchErrors, async (request, response) => {
 	let result = await User.findByIdAndDelete(request.params.id).catch(error => error);
     
 	response.json({
