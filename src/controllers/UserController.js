@@ -85,9 +85,6 @@ router.post("/", async (request, response) => {
 
 
 // POST to /users/login
-
-
-
 router.post("/login", async (request, response) => {
 	// Find user by provided email 
 	let targetUser = await User.findOne({email: request.body.email}).catch(error => error);
