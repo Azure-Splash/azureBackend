@@ -3,6 +3,7 @@ const { User } = require('../models/UserModel');
 const router = express.Router();
 const { comparePassword, generateJwt, decryptString, encryptString } = require('../functions/userAuthFunctions');
 const helmet = require('helmet');
+
 const { validJWT, catchErrors}= require('../middleware/admin_auth')
 
 // get all users
@@ -86,25 +87,26 @@ router.post("/", async (request, response) => {
 
 
 router.post("/login", async (request, response) => {
-	// Find user by provided username 
+	// Find user by provided email
 	let targetUser = await User.findOne({email: request.body.email}).catch(error => error);
 
 	// Check if user provided the correct password
 	let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password);
-
-	if (!isPasswordCorrect){
-		response.status(403).json({error:"You are not authorised to do this!"});
-	}
-
-	// If they provided the correct, generate a JWT
+	
+	if (!isPasswordCorrect) {
+		response.status(403).json({error:"Incorrect Password, try again!"});
+	} else{
 	let freshJwt = generateJwt(targetUser._id.toString());
+
 
 	// respond with the JWT 
 	response.json({
 		jwt: freshJwt
 	});
+}
 
 });
+
 
 
 // update user
