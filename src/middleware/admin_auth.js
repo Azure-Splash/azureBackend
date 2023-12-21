@@ -82,5 +82,8 @@ if (error){
 
 module.exports={
 
-  isAdmin, catchErrors, validateBasicAuth, validJWT
+  isAdmin,
+  // catchErrors, 
+  //  validateBasicAuth, 
+  validJWT
 }
