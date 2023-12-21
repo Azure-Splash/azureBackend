@@ -3,7 +3,6 @@ const { User } = require('../models/UserModel');
 const router = express.Router();
 const { comparePassword, generateJwt, decryptString, encryptString } = require('../functions/userAuthFunctions');
 const helmet = require('helmet');
-
 const { validJWT, catchErrors}= require('../middleware/admin_auth')
 
 // get all users

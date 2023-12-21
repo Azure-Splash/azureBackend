@@ -5,7 +5,6 @@ const { databaseConnect } = require('./database');
 const { User } = require('./models/UserModel');
 const { Pool } = require('./models/PoolModel');
 const { Booking } = require('./models/BookingModel');
-const { Role } = require('./models/RolesModel');
 
 
 databaseConnect().then(async () => {
@@ -15,20 +14,6 @@ databaseConnect().then(async () => {
 
     // Roles
 
-    let adminRole = await Role.create({
-        name: "Admin",
-        permissions: ['create', 'read', 'update', 'delete']
-    })
-
-    let customerRole = await Role.create({
-        name: "Customer",
-        permissions: ['read']
-    })
-
-    let workerRole = await Role.create({
-        name: "Worker",
-        permissions: ['create', 'read', 'update', 'delete']
-    })
 
     // Admin user 
     let newAdmin = await User.create({
@@ -40,7 +25,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0404999222",
         age: "45",
         suburb: "Burleigh",
-        role: adminRole._id
+        role: "admin"
     });
 
     // User Model
@@ -54,7 +39,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0401438902",
         age: "26",
         suburb: "Mermaid Water",
-        role: workerRole._id
+       
     });
 
     let newUser1 = await User.create({
@@ -66,7 +51,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0402663123",
         age: "30",
         suburb: "Miami",
-        role: customerRole._id
+       
     });
 
     let newUser2 = await User.create({
@@ -78,7 +63,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0401438904",
         age: "34",
         suburb: "Adelaide",
-        role: customerRole._id
+     
     });
 
     // Pool Model
