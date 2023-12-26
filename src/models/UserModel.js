@@ -50,7 +50,6 @@ const UserSchema = new Schema({
         type: String,
         default: 'user', // default role of 'user' 
         enum: ['user', 'admin', 'worker'], // Enumerating possible roles to ensure valid values
-        required: true,
         unique: false
       },
 });
