@@ -1,53 +1,78 @@
 const express = require('express');
 const { User } = require('../models/UserModel');
 const router = express.Router();
-const { comparePassword, generateJwt } = require('../functions/userAuthFunctions');
-const { verifyToken, isAdmin, authUser } = require('../middleware/admin_auth');
+const { authUser } = require('../middleware/admin_auth');
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 
 // get all users
-router.get('/all', verifyToken,  async (request, response) => {
-
-
-	try{
-
-	let result = await User.find({ _id: request.user.id}).populate('role', 'name').sort({ createdAt: -1 });
-
-	if (!result){
-		return response.status(404).json({message: 'No data found'});
+// Admin and workers only
+router.get('/all', authUser,  async (request, response) => {
+	if (request.user.role === 'admin'|| 'worker'){
+		let result = await User.find({}).populate('role', 'name').sort({ createdAt: -1 });
+			response.json({user: result})
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
 	}
-
-	response.json({
-		user: result
-	})
-}
-catch (error) {
-	response.status(500).json({error: error.message});
-}
-
 });
 
+
 // find one user by id
-router.get("/one/:id",  async (request, response) => {
-	let result = await User.findOne({_id: request.params.id});
-	response.json({
-		user: result
-	});
+// Admin and workers only
+router.get("/one/:id", authUser, async (request, response) => {
+	if (request.user.role === 'admin' || 'worker'){
+		let result = await User.findOne({_id: request.params.id});
+		response.json({user: result})
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
+	}
 });
 
 // find user by last name
+// Admin and workers only
 router.get("/name/:lastName", async (request, response) => {
-	let result = await User.find({lastName: request.params.lastName});
-
-	response.json({
-		user: result
+	if (request.user.role === 'admin'|| 'worker'){
+		let result = await User.find({lastName: request.params.lastName});
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
+	}
 	});
+
+// update user
+// does not overwrite or remove any unmentioned properties
+// Admin and workers only
+router.patch("/:id",authUser, async (request, response) => {
+	if (request.user.role === 'admin' || 'worker'){
+	let result = await User.findByIdAndUpdate(
+		request.params.id, 
+		request.body,
+		{
+			returnDocument:"after",
+	
+		}
+		).catch(error => error);
+
+	response.json({user: result});
+
+} else{
+	response.status(403).json({error: 'Access Forbidden'})
+}
 });
 
 
+// delete user by id. 
+// Admin only
+router.delete("/delete/:id",authUser, async (request, response) => {
+	if (request.user.role === 'admin'){
+		let result = await User.findByIdAndDelete(request.params.id).catch(error => error);
+		response.json({deletedUser: result});
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
+	}
+});
 
 // create new user
 router.post("/register", async (request, response) => {
@@ -63,6 +88,7 @@ router.post("/register", async (request, response) => {
 
 // POST to /users/login
 router.post("/login", async (request, response) => {
+
 	// Find user by provided email 
 	const { email, password } = request.body;
 
@@ -88,58 +114,6 @@ router.post("/login", async (request, response) => {
 	}
 });
 
-	// let targetUser = await User.findOne({email: request.body.email}).catch(error => error);
 
-	// if (!targetUser){
-	// 	return response.status(401).json ({message: 'Invalid Email or Password!'})
-	// }
-
-	// // Check if user provided the correct password
-	// let isPasswordCorrect = await comparePassword(request.body.password, targetUser.password);
-
-	// if (!isPasswordCorrect){
-	// 	response.status(401).json({error:"Invalid Email or Password!"});
-	// }
-
-	// // If they provided the correct, generate a JWT
-	// let freshJwt = generateJwt(targetUser._id.toString());
-
-	// respond with the JWT 
-// 	response.json({
-// 		jwt: freshJwt
-// 	});
-
-// });
-
-
-
-// update user
-// does not overwrite or remove any unmentioned properties
-router.patch("/:id", async (request, response) => {
-	let result = await User.findByIdAndUpdate(
-		request.params.id, 
-		request.body,
-		{
-			returnDocument:"after",
-	
-		}
-		).catch(error => error);
-
-	response.json({
-		user: result
-	});
-
-});
-
-
-// delete user by id
-router.delete("/:id", async (request, response) => {
-	let result = await User.findByIdAndDelete(request.params.id).catch(error => error);
-    
-	response.json({
-		deletedUser: result
-	});
-
-});
 
 module.exports = router;
