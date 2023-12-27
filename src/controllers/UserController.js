@@ -7,8 +7,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 
-// response.json({ user: request.user})
-
 // create new user
 router.post("/register", async (request, response) => {
 	let newUser = await User.create(request.body).catch(error => error);
