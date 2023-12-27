@@ -33,7 +33,7 @@ router.get("/user/one/:id", authUser, async (request, response) => {
 
 // find user by last name
 // Admin and workers only
-router.get("/name/:lastName", async (request, response) => {
+router.get("/name/:lastName", authUser, async (request, response) => {
 	if (request.user.role === 'admin'|| 'worker'){
 		let result = await User.find({lastName: request.params.lastName});
 	} else{
