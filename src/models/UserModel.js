@@ -1,6 +1,7 @@
 const mongoose =require('mongoose')
 const bcrypt = require('bcryptjs');
 
+
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -50,7 +51,6 @@ const UserSchema = new Schema({
         type: String,
         default: 'user', // default role of 'user' 
         enum: ['user', 'admin', 'worker'], // Enumerating possible roles to ensure valid values
-        required: true,
         unique: false
       },
 });

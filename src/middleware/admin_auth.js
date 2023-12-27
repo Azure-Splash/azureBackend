@@ -1,89 +1,61 @@
 
-
+require('dotenv').config();
+const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const User = require('../models/UserModel'); // Adjust the path based on your project structure
+const { User } = require('../models/UserModel');
 
-const validateBasicAuth = (request, response, next) => { 
 
-  // Assign the header to something easier to work with, if it exists.
-  let authHeader = request.headers["authorization"] ?? null;
+// authernticate
 
-  // If no auth header provided, stop the request.
-  if (authHeader == null) {
-      throw new Error("No auth data detected on a request to a protected route!");
-  }
+const authUser = async (request, response, next) => {
+  const token = request.headers.authorization?.split(' ')[1];
 
-  // Confirm it's a Basic auth string, 
-  // and store only the encoded string.
-  if (authHeader.startsWith("Basic ")) {
-      authHeader = authHeader.substring(5).trim();
-  }
+  if (!token){
+    return response.status(401). json({error: 'Must be a logged in as an  Admin'})
+   }
 
-  // Decode the string.
-  let decodedAuth = Buffer.from(authHeader, 'base64').toString('ascii');
+  try{
+    const decodedToken = jwt.verify(token, process.env.USER_JWT_KEY);
+   const user = await User.findById(decodedToken.id)
 
-  // Convert it into a usable object.
-  let objDecodedAuth = {email: '', password: ''};
-  objDecodedAuth.email = decodedAuth.substring(0, decodedAuth.indexOf(":"));
-  objDecodedAuth.password = decodedAuth.substring(decodedAuth.indexOf(":") + 1);
+   if(!user){
+    return response.status(401).json({ error: 'Unauthorised'})
+   }
 
-  // Attach the object to the request
-  request.userAuthDetails = objDecodedAuth;
-
-  next();
-}
-
-const isAdmin = async (request, response, next) => {
-  try {
-
-      if (request.user.role === "admin") {
-          next();
-      } else {
-          response.status(403);
-          throw new Error("You are not authorised to access this route");
-      }
-  } catch (error) {
-      next(error);
+   request.user = user;
+   next()
+  }catch (error){
+    return response(401).json({error:'Unauthorised'})
   }
 };
 
-// Process the JWT on the request headers 
-const validJWT = (request, response, next) => {
-  let suppliedToken = request.headers.jwt;
-  console.log(suppliedToken);
 
-  // jwt.verify(token, secret, callback function);
-  jwt.verify(suppliedToken, process.env.USER_JWT_KEY, (error, decodedJWT) => {
-      if (error) {
-          console.log(error);
-    // This will be caught by error-handling middleware.
-          throw new Error("User not authenticated.");
-      }
+//  verift jwt token
+// const verifyToken = (request, response, next) => {
+//   // const secretKey = process.env.USER_JWT_KEY;
+//   const token = request.header('Authorization');
 
-  // Attach the decoded JWT to the request as an object.
-      request.decodedJWT = decodedJWT;
-  });
+//   if (!token){
+//     return response.status(401).json({message: 'Access Denied, token missing'});
+//   }
 
-  next();
-}
+//   try {
+//     const decoded = jwt.verify(token, process.env.USER_JWT_KEY);
+//     request.user = decoded;
 
-// Error-handling middleware
-// For simplicity's sake in this challenge,
-// we're assuming the only error we'll ever get is
-// that the user's auth data is invalid.
-const catchErrors = (error, request, response, next) => {
-console.log("Error obj:" + error)
-if (error){
-  response.status(403).json({
-    error: error.message
-  })
-}
-}
+//     if (request.user.role !== 'admin'){
+//       return response.status(403).json({message:'Access Denied, Must Be An Admin!'})
+//     }
+//     next();
+//   } 
+//   catch (error) {
+//     response.status(400).json({message: 'Invalid Token'});
+//   }
+// };
+
+
 
 module.exports={
 
-  isAdmin,
-  // catchErrors, 
-  //  validateBasicAuth, 
-  validJWT
+ authUser
 }
