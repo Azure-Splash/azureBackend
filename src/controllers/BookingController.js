@@ -1,17 +1,28 @@
 const express = require('express');
 const { Booking } = require('../models/BookingModel');
+const { authUser } = require('../middleware/admin_auth');
 const router = express.Router();
 
 
+// router.get('/all', authUser,  async (request, response) => {
+// 	if (request.user.role === 'admin'|| 'worker'){
+// 		let result = await User.find({}).populate('role', 'name').sort({ createdAt: -1 });
+// 			response.json({user: result})
+// 	} else{
+// 		response.status(403).json({error: 'Access Forbidden'})
+// 	}
+// });
+
 // get all booking by id
-router.get("/admin/all", async (request, response) => {
+// Admin and worker s only
+router.get("/admin/all", authUser, async (request, response) => {
+	if (request.user.role === 'admin'|| 'worker'){
 	// Empty object in .find() means get ALL documents
 	let result = await Booking.find({}).populate('user pool', '-password -numberOfLanes');
-
-	response.json({
-		booking: result
-	});
-
+		response.json({user: result})
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
+	}
 });
 
 // find booking by date
