@@ -46,7 +46,6 @@ app.use('/users', UserController);
 const AdminController = require('./controllers/AdminControllers');
 app.use('/admin', AdminController);
 
-
 const PoolController = require('./controllers/PoolController');
 app.use('/pools', PoolController); 
 
