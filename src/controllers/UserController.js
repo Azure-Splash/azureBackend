@@ -48,5 +48,63 @@ router.post("/login", async (request, response) => {
 });
 
 
+// user to view their own details
+router.get('/details', authUser,  async (request, response) => {
+	response.json({ user: request.user})
+	if (request.user.role === 'user'){
+		let result = await User.findOne({user: body.user});
+			response.json({user: result})
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
+	}
+});
+
+
+//user to update own details
+router.patch("/update",authUser, async (request, response) => {
+	try {
+		const update = { ...request.body };
+	
+		// Prevent role updates
+		if (update.role) {
+		  return response.status(400).json({
+			message: "Role updates are not allowed through this route.",
+		  });
+		}
+	
+		let user = await User.findByIdAndUpdate(request.user._id, update, {new: true,}).select("-role");
+	
+		if (!user) {
+		  return response.status(404).json({ message: "User not found" });
+		}
+	
+		response.json(user);
+	  } catch (error) {console.error(error);
+		return response.status(500).json({ message: "An error occurred during the update" });
+	  }
+	});
+
+// user to delete own account
+router.delete("/delete", authUser, async (request, response) => {
+	try {
+	  const user = await User.findByIdAndDelete(request.user._id);
+  
+	  // Check if the user was deleted successfully
+	  if (!user) {
+		return res
+		  .status(400)
+		  .json({ message: "User not found or could not be deleted" });
+	  }
+  
+	  response.json({ message: "Account deleted successfully" });
+	} catch (error) {
+		console.error(error);
+	  	response.status(500).json({ message: "An error occurred while trying to delete the user" });
+	}
+  });
+  
+
+
+
 
 module.exports = router;
