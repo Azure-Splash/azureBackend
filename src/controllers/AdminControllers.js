@@ -11,7 +11,7 @@ require('dotenv').config();
 // get all users
 // Admin and workers only
 router.get('/users/all', authUser,  async (request, response) => {
-	if (request.user.role === 'admin'|| 'worker'){
+	if (request.user.role === 'admin'){
 		let result = await User.find({}).populate('role', 'name').sort({ createdAt: -1 });
 			response.json({user: result})
 	} else{

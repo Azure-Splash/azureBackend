@@ -2,6 +2,7 @@ const express = require('express');
 const { Booking } = require('../models/BookingModel');
 const { authUser } = require('../middleware/admin_auth');
 const router = express.Router();
+require('dotenv').config();
 
 
 // router.get('/all', authUser,  async (request, response) => {
@@ -19,7 +20,7 @@ router.get("/admin/all", authUser, async (request, response) => {
 	if (request.user.role === 'admin'|| 'worker'){
 	// Empty object in .find() means get ALL documents
 	let result = await Booking.find({}).populate('user pool', '-password -numberOfLanes');
-		response.json({user: result})
+		response.json({booking: result})
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
 	}
@@ -35,12 +36,14 @@ router.get('/admin/:date', async(request, response) => {
 });
 
 // find one booking by id
-router.get("/admin/one/:id", async (request, response) => {
-	let result = await Booking.findOne({_id: request.params.id}).populate('user pool', '-password').catch(error => error);
-
-	response.json({
-		booking: result
-	});
+router.get("/admin/one/:id",authUser, async (request, response) => {
+	
+	if (request.user.role === 'admin'){
+		let result = await Booking.findOne({_id: request.params.id}).populate('user pool', '-password');
+		response.json({booking: result})
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
+	}
 });
 
 // get bookings by user id
