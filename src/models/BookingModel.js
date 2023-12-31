@@ -3,11 +3,11 @@ const mongoose =require('mongoose')
 const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema({
-   user: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "User", 
-      required: true
-   },
+   user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
    pool: { 
       type: mongoose.Schema.Types.ObjectId, 
       ref: "Pool", 

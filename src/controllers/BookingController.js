@@ -1,23 +1,16 @@
 const express = require('express');
 const { Booking } = require('../models/BookingModel');
-const { authUser } = require('../middleware/admin_auth');
+const { authUser, addId } = require('../middleware/admin_auth');
 const router = express.Router();
 require('dotenv').config();
 
 
-// router.get('/all', authUser,  async (request, response) => {
-// 	if (request.user.role === 'admin'|| 'worker'){
-// 		let result = await User.find({}).populate('role', 'name').sort({ createdAt: -1 });
-// 			response.json({user: result})
-// 	} else{
-// 		response.status(403).json({error: 'Access Forbidden'})
-// 	}
-// });
-
 // get all booking by id
 // Admin and worker s only
 router.get("/admin/all", authUser, async (request, response) => {
-	if (request.user.role === 'admin'|| 'worker'){
+	const allowedRoles =['admin', 'worker'];
+
+	if (allowedRoles.includes(request.user.role)){
 	// Empty object in .find() means get ALL documents
 	let result = await Booking.find({}).populate('user pool', '-password -numberOfLanes');
 		response.json({booking: result})
@@ -27,18 +20,25 @@ router.get("/admin/all", authUser, async (request, response) => {
 });
 
 // find booking by date
-router.get('/admin/:date', async(request, response) => {
+// Admin and workers only
+router.get('/admin/:date', authUser, async(request, response) => {
+	const allowedRoles =['admin', 'worker'];
+
+	if (allowedRoles.includes(request.user.role)){
 	let result = await Booking.find({date: request.params.date}).populate('user pool', '-password').catch(error => error);
 
-	response.json({
-		booking: result
-	});
+	response.json({booking: result});
+} else{
+	response.status(403).json({error: 'Access Forbidden'})
+}
 });
 
 // find one booking by id
+// Admin and workers
 router.get("/admin/one/:id",authUser, async (request, response) => {
-	
-	if (request.user.role === 'admin'){
+	const allowedRoles =['admin', 'worker'];
+
+	if (allowedRoles.includes(request.user.role)){
 		let result = await Booking.findOne({_id: request.params.id}).populate('user pool', '-password');
 		response.json({booking: result})
 	} else{
@@ -47,31 +47,137 @@ router.get("/admin/one/:id",authUser, async (request, response) => {
 });
 
 // get bookings by user id
-router.get("/admin/user/:userId", async (request, response) =>{
+// Admin and workers
+router.get("/admin/user/:userId",authUser, async (request, response) =>{
+	const allowedRoles =['admin', 'worker'];
+
+	if (allowedRoles.includes(request.user.role)){
     let result = await Booking.find({ user: request.params.userId }).populate('user pool', '-password').catch(error => error);
 
-    response.json({
-		booking: result
-	});
+    response.json({booking: result});
+} else{
+	response.status(403).json({error: 'Access Forbidden'})
+}
 });
 
 // get bookings by pool
-router.get("/admin/pool/:poolId", async (request, response) => {
+//  Admin and workers
+router.get("/admin/pool/:poolId", authUser,async (request, response) => {
+	const allowedRoles =['admin', 'worker'];
+
+	if (allowedRoles.includes(request.user.role)){
     let result = await Booking.find({pool: request.params.poolId}).populate('user pool', '-password -numberOfLanes').catch(error => error);
 
-    response.json({
-        booking: result
-    });
+    response.json({booking: result });
+} else{
+	response.status(403).json({error: 'Access Forbidden'})
+}
 });
+
+
 
 // create a booking
-router.post("/", async (request, response) => {
-	let newBooking = await Booking.create(request.body).catch(error => error);
+// user must have an account and be signed in
+router.post('/new',  addId, async (request, response) => {
+	const { pool, time, date, lane } = request.body;
+  
+	try {
+	  // Check if the required fields are provided
+	  if (!pool || !time || !date || !lane) {
+		return response.status(400).json({ message: "Missing required fields" });
+	  }
+  
+	  // Use createBooking function to create a new booking
+	  const newBooking = await createBooking(pool, time, date, lane, request);
+  
+	  response.status(201).json(newBooking);
+	} catch (error) {
+	  response.status(500).json({ message: error.message });
+	}
+  });
+  
+  // Function to create a booking
+  const createBooking = async (pool, time, date, lane, request) => {
+	try {
+	  // Check if the user is authenticated
+	  if (!request.user) {
+		throw new Error('User not authenticated');
+	  }
+  
+	// Create a new booking using the Booking model
+	  const newBooking = await Booking.create({
+		user: request.user._id, // Include the user field
+		pool,
+		time,
+		date,
+		lane,
+	  });
+  
+	  return newBooking;
+	} catch (error) {
+	  throw new Error('Failed to create booking: ' + error.message);
+	}
+  };
 
-    response.json(newBooking);
-});
 
-// edit booking by id
+  // Admin to create a booking by entering user id
+  // Admin and workers
+  router.post('/admin/new-booking',  authUser, async (request, response) => {
+	
+	const { user, pool, time, date, lane } = request.body;
+  
+	try {
+		const allowedRoles =['admin', 'worker'];
+
+	if (allowedRoles.includes(request.user.role))
+	  // Check if the required fields are provided
+	  if (!user || !pool || !time || !date || !lane) {
+		return response.status(400).json({ message: "Missing required fields" });
+	  }
+  
+	  // Use createBooking function to create a new booking
+	  const newBooking = await adminCreateBooking(user, pool, time, date, lane, request);
+  
+	  response.status(201).json(newBooking);
+	} catch (error) {
+	  response.status(500).json({ message: error.message });
+	}
+  });
+  
+  // Function to create a booking
+  const adminCreateBooking = async (user, pool, time, date, lane, request) => {
+	try {
+	  // Check if the user is authenticated
+	  if (!request.user) {
+		throw new Error('User not authenticated');
+	  } 
+  
+	// Create a new booking using the Booking model
+	  const newBooking = await Booking.create({
+		user,
+		pool,
+		time,
+		date,
+		lane,
+	  });
+
+	  await newBooking.populate('user pool', 'firstName email poolName')
+  
+
+	  return {
+		booking: newBooking,
+		userName: user.firstName, // Include the user's name in the response
+	  };
+	} catch (error) {
+	  throw new Error('Failed to create booking: ' + error.message);
+	}
+  };
+
+
+// user to edit own booking
+
+// needs work ////////////////////////
+
 router.patch("/:id", async (request, response) => {
 	let result = await Booking.findByIdAndUpdate(
 		request.params.id, 
@@ -89,8 +195,10 @@ router.patch("/:id", async (request, response) => {
 });
 
 
+// admin to delete any booking
 
-// delete booking by id
+
+//user to delete own booking 
 router.delete("/:id", async (request, response) => {
 	let result = await Booking.findByIdAndDelete(request.params.id).catch(error => error);
 
