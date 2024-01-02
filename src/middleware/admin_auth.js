@@ -10,19 +10,25 @@ const { User } = require('../models/UserModel');
 const authUser = async (request, response, next) => {
   const token = request.headers.authorization?.split(' ')[1];
 
+  // if token is not present throw error
   if (!token){
     return response.status(401). json({error: 'Must be a logged and have the right access permissions'})
    }
 
+
+    // Verify the token and decode its payload
   try{
-    const decodedToken = jwt.verify(token, process.env.USER_JWT_KEY);
+  const decodedToken = jwt.verify(token, process.env.USER_JWT_KEY);
    const user = await User.findById(decodedToken.id)
 
+   // If the user is not found, return an unauthorized error response
    if(!user){
     return response.status(401).json({ error: 'Unauthorised'})
    }
 
    request.user = user;
+
+   // call middleware
    next()
   } catch (error) {
     return response.status(401).json({ error: 'Unauthorized' });

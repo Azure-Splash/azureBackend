@@ -9,11 +9,14 @@ require('dotenv').config();
 
 // create new user
 router.post("/register", async (request, response) => {
-	let newUser = await User.create(request.body).catch(error => error);
-
+try{
+	let newUser = await User.create(request.body)
 	response.status(201).json({message: 'User registered successfully!'});
 
     response.json({user: newUser});
+} catch{
+	response.status(500).json({ message: "An error occurred during the update" });
+}
 });
 
 
@@ -47,9 +50,11 @@ router.post("/login", async (request, response) => {
 
 
 // user to view their own details
+// a user can only view own details
 router.get('/details', authUser,  async (request, response) => {
 	response.json({ user: request.user})
 	if (request.user.role === 'user'){
+		// find user
 		let result = await User.findOne({user: body.user});
 			response.json({user: result})
 	} else{

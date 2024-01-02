@@ -11,9 +11,10 @@ router.get("/admin/all", authUser, async (request, response) => {
 	const allowedRoles =['admin', 'worker'];
 
 	if (allowedRoles.includes(request.user.role)){
-	// Empty object in .find() means get ALL documents
+	// find all bookings
 	let result = await Booking.find({}).populate('user pool', '-password -numberOfLanes');
-		response.json({booking: result})
+
+		response.json({message: 'List of all bookings' , booking: result})
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
 	}
@@ -27,7 +28,7 @@ router.get('/admin/:date', authUser, async(request, response) => {
 	if (allowedRoles.includes(request.user.role)){
 	let result = await Booking.find({date: request.params.date}).populate('user pool', '-password').catch(error => error);
 
-	response.json({booking: result});
+	response.json({message: 'Bookings for selected date' , booking: result});
 } else{
 	response.status(403).json({error: 'Access Forbidden'})
 }
@@ -40,7 +41,8 @@ router.get("/admin/one/:id",authUser, async (request, response) => {
 
 	if (allowedRoles.includes(request.user.role)){
 		let result = await Booking.findOne({_id: request.params.id}).populate('user pool', '-password');
-		response.json({booking: result})
+		
+		response.json({mewssage: 'Bookings by selected ID', booking: result})
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
 	}
@@ -52,9 +54,9 @@ router.get("/admin/user/:userId",authUser, async (request, response) =>{
 	const allowedRoles =['admin', 'worker'];
 
 	if (allowedRoles.includes(request.user.role)){
-    let result = await Booking.find({ user: request.params.userId }).populate('user pool', '-password').catch(error => error);
+    let result = await Booking.find({ user: request.params.userId }).populate('user pool', '-password');
 
-    response.json({booking: result});
+    response.json({message: 'All Boookings with Selected User',booking: result});
 } else{
 	response.status(403).json({error: 'Access Forbidden'})
 }
@@ -66,9 +68,8 @@ router.get("/admin/pool/:poolId", authUser,async (request, response) => {
 	const allowedRoles =['admin', 'worker'];
 
 	if (allowedRoles.includes(request.user.role)){
-    let result = await Booking.find({pool: request.params.poolId}).populate('user pool', '-password -numberOfLanes').catch(error => error);
-
-    response.json({booking: result });
+    let result = await Booking.find({pool: request.params.poolId}).populate('user pool', '-password -numberOfLanes');
+    response.json({message:'All Bookings for selected pool',booking: result });
 } else{
 	response.status(403).json({error: 'Access Forbidden'})
 }
