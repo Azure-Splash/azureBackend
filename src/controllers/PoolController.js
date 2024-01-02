@@ -10,7 +10,7 @@ router.get("/admin/all", authUser, async (request, response) => {
 	if (request.user.role === 'admin'){
 		let result = await Pool.find({});
 
-		response.json({pool: result});
+		response.json({message: 'List of All Pools', pool: result});
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
 	}
