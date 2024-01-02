@@ -9,11 +9,15 @@ require('dotenv').config();
 
 // create new user
 router.post("/register", async (request, response) => {
+try{
 	let newUser = await User.create(request.body).catch(error => error);
 
 	response.status(201).json({message: 'User registered successfully!'});
 
     response.json({user: newUser});
+} catch{
+	response.status(500).json({ message: "An error occurred during the update" });
+}
 });
 
 

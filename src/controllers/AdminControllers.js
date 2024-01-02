@@ -13,7 +13,9 @@ require('dotenv').config();
 router.get('/users/all', authUser,  async (request, response) => {
 	if (request.user.role === 'admin'|| 'worker'){
 		let result = await User.find({}).populate('role', 'name').sort({ createdAt: -1 });
-			response.json({user: result})
+
+
+			response.json({message:'List of All Users',user: result})
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
 	}
@@ -37,6 +39,8 @@ router.get("/name/:lastName", authUser, async (request, response) => {
 
 	if (request.user.role === 'admin'|| 'worker'){
 		let result = await User.find({lastName: request.params.lastName});
+
+		response.json({user: result})
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
 	}
@@ -69,7 +73,9 @@ router.patch("/user/update/:id",authUser, async (request, response) => {
 router.delete("/user/delete/:id",authUser, async (request, response) => {
 	if (request.user.role === 'admin'){
 		let result = await User.findByIdAndDelete(request.params.id).catch(error => error);
-		response.json({deletedUser: result});
+
+
+		response.json({message: 'User deleted' ,deletedUser: result});
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
 	}

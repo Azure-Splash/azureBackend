@@ -22,7 +22,7 @@ router.get("admin/one/:id", authUser, async (request, response) => {
 	if (request.user.role === 'admin'){
 		let result = await Pool.findOne({_id: request.params.id});
 
-		response.json({pool: result});
+		response.json({message: 'User found', pool: result});
 
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
@@ -57,7 +57,7 @@ router.patch("/admin/update/:id", authUser, async (request, response) => {
 		}
 		);
 		
-		response.json({pool: result});
+		response.json({message: 'Pool successfully updated' ,pool: result});
 
 	} else{
 		response.status(403).json({error: 'Access Forbidden'})
@@ -71,6 +71,7 @@ router.delete("/admin/delete/:id", authUser, async (request, response) => {
 	if (request.user.role === 'admin'){
 		let result = await Pool.findByIdAndDelete(request.params.id)
 	try {
+		// throw error if pool is not found
 	  if (!result) {
 		return response.status(400).json({ message: "Pool not found or could not be deleted" });
 	  }
