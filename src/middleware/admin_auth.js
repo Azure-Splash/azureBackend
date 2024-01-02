@@ -11,7 +11,7 @@ const authUser = async (request, response, next) => {
   const token = request.headers.authorization?.split(' ')[1];
 
   if (!token){
-    return response.status(401). json({error: 'Must be a logged in as an  Admin'})
+    return response.status(401). json({error: 'Must be a logged and have the right access permissions'})
    }
 
   try{
@@ -24,38 +24,49 @@ const authUser = async (request, response, next) => {
 
    request.user = user;
    next()
-  }catch (error){
-    return response(401).json({error:'Unauthorised'})
+  } catch (error) {
+    return response.status(401).json({ error: 'Unauthorized' });
   }
-};
+}
 
 
-//  verift jwt token
-// const verifyToken = (request, response, next) => {
-//   // const secretKey = process.env.USER_JWT_KEY;
-//   const token = request.header('Authorization');
+// Middleware to add user ID to request
+async function addId(req, res, next) {
+  try {
+    const header = req.header("Authorization");
 
-//   if (!token){
-//     return response.status(401).json({message: 'Access Denied, token missing'});
-//   }
+    if (!header) {
+      return res.status(401).json({ message: "Missing authorization header" });
+    }
 
-//   try {
-//     const decoded = jwt.verify(token, process.env.USER_JWT_KEY);
-//     request.user = decoded;
+    const token = header.replace("Bearer ", "");
+    const decoded = jwt.verify(token, process.env.USER_JWT_KEY);
 
-//     if (request.user.role !== 'admin'){
-//       return response.status(403).json({message:'Access Denied, Must Be An Admin!'})
-//     }
-//     next();
-//   } 
-//   catch (error) {
-//     response.status(400).json({message: 'Invalid Token'});
-//   }
-// };
+    console.log('Decoded Token:', decoded);
+
+    // Corrected query to use 'id' field
+    const user = await User.findOne({ _id: decoded.id });
+
+    console.log('Found User:', user);
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = user;
+    next();
+  } catch (e) {
+    console.error('Authentication Error:', e);
+    return res.status(401).json({ message: "Error authenticating: " + e.message });
+  }
+}
+
+
 
 
 
 module.exports={
 
+  addId,
  authUser
 }
