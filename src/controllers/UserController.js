@@ -10,8 +10,7 @@ require('dotenv').config();
 // create new user
 router.post("/register", async (request, response) => {
 try{
-	let newUser = await User.create(request.body).catch(error => error);
-
+	let newUser = await User.create(request.body)
 	response.status(201).json({message: 'User registered successfully!'});
 
     response.json({user: newUser});
@@ -51,9 +50,11 @@ router.post("/login", async (request, response) => {
 
 
 // user to view their own details
+// a user can only view own details
 router.get('/details', authUser,  async (request, response) => {
 	response.json({ user: request.user})
 	if (request.user.role === 'user'){
+		// find user
 		let result = await User.findOne({user: body.user});
 			response.json({user: result})
 	} else{
