@@ -74,52 +74,6 @@ router.get("/admin/pool/:poolId", authUser,async (request, response) => {
 }
 });
 
-
-
-// create a booking
-// user must have an account and be signed in
-router.post('/new',  addId, async (request, response) => {
-	const { pool, time, date, lane } = request.body;
-  
-	try {
-	  // Check if the required fields are provided
-	  if (!pool || !time || !date || !lane) {
-		return response.status(400).json({ message: "Missing required fields" });
-	  }
-  
-	  // Use createBooking function to create a new booking
-	  const newBooking = await createBooking(pool, time, date, lane, request);
-  
-	  response.status(201).json(newBooking);
-	} catch (error) {
-	  response.status(500).json({ message: error.message });
-	}
-  });
-  
-  // Function to create a booking
-  const createBooking = async (pool, time, date, lane, request) => {
-	try {
-	  // Check if the user is authenticated
-	  if (!request.user) {
-		throw new Error('User not authenticated');
-	  }
-  
-	// Create a new booking using the Booking model
-	  const newBooking = await Booking.create({
-		user: request.user._id, // Include the user field
-		pool,
-		time,
-		date,
-		lane,
-	  });
-  
-	  return newBooking;
-	} catch (error) {
-	  throw new Error('Failed to create booking: ' + error.message);
-	}
-  };
-
-
   // Admin to create a booking by entering user id
   // Admin and workers
   router.post('/admin/new-booking',  authUser, async (request, response) => {
@@ -173,12 +127,12 @@ router.post('/new',  addId, async (request, response) => {
 	}
   };
 
+// update a users booking details, search by user ID
+// admin and workers only
+router.patch("/admin/update/:id", authUser,async (request, response) => {
+	const allowedRoles =['admin', 'worker'];
 
-// user to edit own booking
-
-// needs work ////////////////////////
-
-router.patch("/:id", async (request, response) => {
+	if (allowedRoles.includes(request.user.role)){
 	let result = await Booking.findByIdAndUpdate(
 		request.params.id, 
 		request.body,
@@ -187,26 +141,130 @@ router.patch("/:id", async (request, response) => {
 	
 		}
 		).catch(error => error);
-
-	response.json({
-		booking: result
-	});
+		response.json({booking: result});
+	}else{
+		response.status(403).json({error: 'Access Forbidden'})	
+	}
 
 });
 
 
 // admin to delete any booking
+router.delete('/admin/delete/:id', authUser, async(request, response)=>{
+	const allowedRoles =['admin', 'worker'];
 
-
-//user to delete own booking 
-router.delete("/:id", async (request, response) => {
-	let result = await Booking.findByIdAndDelete(request.params.id).catch(error => error);
-
-	response.json({
-		deletedBooking: result
-	});
-
+	if (allowedRoles.includes(request.user.role)){
+		let result = await Booking.findByIdAndDelete(request.params.id).catch(error => error);
+		response.json({deletedBooking: result});
+	} else{
+		response.status(403).json({error: 'Access Forbidden'})
+	}
 });
+
+///////////////////////////////////////////
+
+// create a booking
+// user must have an account and be signed in
+router.post('/new',  addId, async (request, response) => {
+	const { pool, time, date, lane } = request.body;
+  
+	try {
+	  // Check if the required fields are provided
+	  if (!pool || !time || !date || !lane) {
+		return response.status(400).json({ message: "Missing required fields" });
+	  }
+  
+	  // Use createBooking function to create a new booking
+	  const newBooking = await createBooking(pool, time, date, lane, request);
+  
+	  response.status(201).json(newBooking);
+	} catch (error) {
+	  response.status(500).json({ message: error.message });
+	}
+  });
+  
+  // Function to create a booking
+  const createBooking = async (pool, time, date, lane, request) => {
+	try {
+	  // Check if the user is authenticated
+	  if (!request.user) {
+		throw new Error('User not authenticated');
+	  }
+  
+	// Create a new booking using the Booking model
+	  const newBooking = await Booking.create({
+		user: request.user._id, // Include the user field
+		pool,
+		time,
+		date,
+		lane,
+	  });
+  
+	  return newBooking;
+	} catch (error) {
+	  throw new Error('Failed to create booking: ' + error.message);
+	}
+  };
+
+
+// user to edit own booking
+
+router.patch('/update/:id', authUser, async (request, response) => {
+	const userId = req.user._id;
+	const bookingId = req.params.id;
+	const updates = req.body;
+  
+	try {
+	  // Ensure that the booking exists and is associated with the user
+	  const booking = await Booking.findOne({ _id: bookingId, user: userId });
+  
+	  if (!booking) {
+		return request.status(404).json({ message: 'Booking not found' });
+	  }
+  
+	  // Update the booking fields
+	  Object.keys(updates).forEach((key) => {
+		booking[key] = updates[key];
+	  });
+  
+	  // Save the updated booking
+	  await booking.save();
+  
+	  response.json({ message: 'Booking updated successfully', booking });
+	} catch (error) {
+	  console.error(error);
+	  response.status(500).json({ message: 'An error occurred while updating the booking' });
+	}
+  }); 
+
+// user to view all their bookings
+// must be logged in
+
+router.get("/list-all", authUser, async (request, response) =>{
+	const userId = request.user._id;
+
+	try {
+	  // Fetch all bookings associated with the user
+	  const bookings = await Booking.find({ user: userId });
+  
+	  if (bookings.length === 0) {
+		return response.json({ message: 'You currently have no bookings' });
+	  }
+  
+	  response.json({ bookings });
+	} catch (error) {
+	  console.error(error);
+	  response.status(500).json({ message: 'An error occurred while fetching bookings' });
+	}
+  });
+
+
+// need work ////////////
+//user to delete own booking 
+router.delete("delete/:id", async (request, response) => {
+	const userId = request.user._id
+});
+
 
 
 module.exports = router;
