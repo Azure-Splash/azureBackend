@@ -13,9 +13,7 @@ router.post("/register", async (request, response) => {
 
 	response.status(201).json({message: 'User registered successfully!'});
 
-    response.json({
-		user: newUser
-	});
+    response.json({user: newUser});
 });
 
 
@@ -91,9 +89,7 @@ router.delete("/delete", authUser, async (request, response) => {
   
 	  // Check if the user was deleted successfully
 	  if (!user) {
-		return res
-		  .status(400)
-		  .json({ message: "User not found or could not be deleted" });
+		return response.status(400).json({ message: "User not found or could not be deleted" });
 	  }
   
 	  response.json({ message: "Account deleted successfully" });
