@@ -259,10 +259,32 @@ router.get("/list-all", authUser, async (request, response) =>{
   });
 
 
-// need work ////////////
 //user to delete own booking 
-router.delete("delete/:id", async (request, response) => {
-	const userId = request.user._id
+router.delete("/delete/:id", authUser,async (request, response) => {
+	const userId = request.user._id;
+	const bookingId = request.params.id;
+
+  try {
+    // Ensure that the booking exists and is associated with the user
+    const booking = await Booking.findOne({ _id: bookingId, user: userId });
+
+	// throw error if booking id and user id dont match
+    if (!booking) {
+      return response.status(404).json({ message: 'Booking not found' });
+    }
+	// colledted the bookingID
+	const deletedBookingId = booking._id;
+
+   
+    await booking.deleteOne();
+
+	response.json({ message: 'Booking deleted successfully', deletedBookingId });
+	
+
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: 'An error occurred while deleting the booking' });
+  }
 });
 
 
