@@ -6,7 +6,7 @@ require('dotenv').config();
 
 
 // get all booking by id
-// Admin and worker s only
+// Admin and workers only
 router.get("/admin/all", authUser, async (request, response) => {
 	const allowedRoles =['admin', 'worker'];
 

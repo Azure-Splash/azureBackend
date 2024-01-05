@@ -3,7 +3,7 @@
 
 ## Route Testing
 
-### Admin Controllers
+## Admin Controllers
 
 The following is a list of admin routes
 
@@ -38,7 +38,7 @@ A user can also be deleted by ID
 ![Delete User](./docImages/admin_user_delete.png)
 
 
-### User Controllers
+## User Controllers
 
 ![User Routes](./docImages/users_routes.png)
 
@@ -65,6 +65,32 @@ Update Details (excluding role)
 Delete Account
 ![Deleted User](./docImages/user_delete.png)
 
-### Booking Controllers
+## Booking Controllers
+
+The booking routes have two different set of permissions. Some routes can only be accessed by admin and workers. The others can be accessed by a regular user.
+
+### Booking Admin/Worker Routes
+
+Must be signed in with the right permissions (admin or worker)to access these routes. If not an error message will be thrown.
+
+![Admin Booking Routes](./docImages/booking_admin_routes.png)
+
+#### GET - admin view all bookings
+#### GET - admin find bookings by dates
+#### GET - admin find a booking by id
+#### GET - admin find booking by User ID
+#### GET - admin find all bookings by pool ID
+#### POST - admin can make a booking for a user
+#### PATCH - admin update any booking by booking ID
+#### DELETE - admin delete any booking by booking ID
 
 
+
+### Booking User Routes
+
+![User Booking Routes](./docImages/booking_user_routes.png)
+
+#### POST - logged in user make a new booking
+#### GET - logged in user view all their bookings
+#### PATCH - logged in user to update their own booking by ID
+#### DELETE - logged in user to delete their own booking by ID
