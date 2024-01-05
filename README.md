@@ -76,13 +76,28 @@ Must be signed in with the right permissions (admin or worker)to access these ro
 ![Admin Booking Routes](./docImages/booking_admin_routes.png)
 
 #### GET - admin view all bookings
+![All Bookings](./docImages/admin_booking_all.png)
+
 #### GET - admin find bookings by dates
+![Bookings By Date](./docImages/admin_booking_date.png)
+
 #### GET - admin find a booking by id
+![Booking By ID](./docImages/booking_ID.png)
+
 #### GET - admin find booking by User ID
+![Bookings By User ID](./docImages/booking_UserID.png)
+
 #### GET - admin find all bookings by pool ID
+![Bookings by pool](./docImages/booking_by_pool.png)
+
 #### POST - admin can make a booking for a user
+![New Booking](./docImages/newBooking_admin.png)
+
 #### PATCH - admin update any booking by booking ID
+![Updated Booking Admin](./docImages/updated_admin_booking.png)
+
 #### DELETE - admin delete any booking by booking ID
+![Deleted Booking By Admin](./docImages/Booking_deleted_admin.png)
 
 
 
@@ -91,6 +106,12 @@ Must be signed in with the right permissions (admin or worker)to access these ro
 ![User Booking Routes](./docImages/booking_user_routes.png)
 
 #### POST - logged in user make a new booking
+![User Booking](./docImages/user_booking.png)
+
 #### GET - logged in user view all their bookings
+![User View Bookings](./docImages/user_view_all.png)
+
 #### PATCH - logged in user to update their own booking by ID
+![User Update Booking]
+
 #### DELETE - logged in user to delete their own booking by ID
