@@ -112,6 +112,7 @@ Must be signed in with the right permissions (admin or worker)to access these ro
 ![User View Bookings](./docImages/user_view_all.png)
 
 #### PATCH - logged in user to update their own booking by ID
-![User Update Booking]
+![User Update Booking](./docImages/user_booking_updated.png)
 
 #### DELETE - logged in user to delete their own booking by ID
+![User delete booking](./docImages/user_deleted_booking.png)
