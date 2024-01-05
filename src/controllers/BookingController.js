@@ -6,7 +6,7 @@ require('dotenv').config();
 
 
 // get all booking by id
-// Admin and worker s only
+// Admin and workers only
 router.get("/admin/all", authUser, async (request, response) => {
 	const allowedRoles =['admin', 'worker'];
 
@@ -211,9 +211,9 @@ router.post('/new',  addId, async (request, response) => {
 // user to edit own booking
 
 router.patch('/update/:id', authUser, async (request, response) => {
-	const userId = req.user._id;
-	const bookingId = req.params.id;
-	const updates = req.body;
+	const userId = request.user._id;
+	const bookingId = request.params.id;
+	const updates = request.body;
   
 	try {
 	  // Ensure that the booking exists and is associated with the user
