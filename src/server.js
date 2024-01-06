@@ -9,6 +9,7 @@ const corsOptions = {
 	optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Configure API data receiving & sending
 app.use(express.json());
@@ -21,11 +22,11 @@ app.get("/", (request,response)=>{
 });
 
 // enable cors
-app.use(function(_, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+// app.use(function(_, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 
 // add controllers
 
