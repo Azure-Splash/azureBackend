@@ -16,7 +16,7 @@ const cors = require('cors');
 
 
 const corsOptions = {
-	origin: ["http://localhost:3000/","http://localhost:3005", "https://azuresplash.netlify.app/"],
+	origin: ["http://localhost:3000","http://localhost:3005", "https://azuresplash.netlify.app/"],
 	optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));
