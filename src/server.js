@@ -3,20 +3,9 @@ const app = express();
 const cors = require('cors');
 
 
-// const helmet = require('helmet');
-
-// app.use(helmet());
-// app.use(helmet.permittedCrossDomainPolicies());
-// app.use(helmet.referrerPolicy());
-// app.use(helmet.contentSecurityPolicy({
-//     directives:{
-//         defaultSrc:["'self'"]
-//     }
-// }));
-
 
 const corsOptions = {
-	origin: ["http://localhost:3000","http://localhost:3005", "https://azuresplash.netlify.app/"],
+	origin: ["http://localhost:3000/","http://localhost:3005", "https://azuresplash.netlify.app/"],
 	optionsSuccessStatus: 200
 }
 app.use(cors(corsOptions));
@@ -32,11 +21,11 @@ app.get("/", (request,response)=>{
 });
 
 // enable cors
-// app.use(function(_, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
+app.use(function(_, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 // add controllers
 
