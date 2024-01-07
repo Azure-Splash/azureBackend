@@ -1,4 +1,121 @@
-# azureBackend
+# Azure Splash Part B
+
+ <p align="center">
+ <img  alt="mobile wireframe"  height="300px" width="200px" src="./docImages/logo.png" />
+ </p>
+
+## Deployments
+
+#### Netlify was used to deploy the client side
+- [Azure Splash App](https://azuresplash.netlify.app/)
+
+#### Heroku was used to deploy the server
+- [App Server](https://azures-splash-8d7c939ebec7.herokuapp.com/)
+
+#### Database is host of Cloud Atlas
+ - mongoldb+srv://username:password@azuredb.2qxoahs.mongodb.net/?retryWrites=true&w=majority
+
+ - Username and password are not include in this link but are in the environment variables on the hosted sites
+
+ #### GitHub Repos
+
+ [Server Repo](https://github.com/Azure-Splash/azureBackend)
+
+ [Client Repo](https://github.com/Azure-Splash/azureBackend)
+
+
+ #### Users
+
+ ```Javascript
+ 
+     // Admin user 
+    let newAdmin = await User.create({
+
+        firstName: "Stacy",
+        lastName: "Jones",
+        email: "stacy@azure.com",
+        password: "password",
+        phoneNumber:"0404999222",
+        age: "45",
+        suburb: "Burleigh",
+        role: "admin"
+    });
+
+    // User Model
+    
+    let newUser = await User.create({
+
+        firstName: "Jean",
+        lastName: "Peters",
+        email: "jean@gmail.com",
+        password: "password12",
+        phoneNumber:"0401438902",
+        age: "26",
+        suburb: "Mermaid Water",
+        role: "worker"
+       
+    });
+
+    let newUser1 = await User.create({
+
+        firstName: "Tom",
+        lastName: "Roman",
+        email: "tom@azure.com",
+        password: "password",
+        phoneNumber:"0402663123",
+        age: "30",
+        suburb: "Miami",
+       
+    });
+
+    let newUser2 = await User.create({
+
+        firstName: "John",
+        lastName: "Peters",
+        email: "john@gmail.com",
+        password: "password12",
+        phoneNumber:"0401438904",
+        age: "34",
+        suburb: "Adelaide",
+     
+    });
+ 
+ ```
+
+
+
+## Project Management & Source Control
+
+[Trello Board For Azure Splash](https://trello.com/b/4UmWpC8H/azure-development)
+
+When developing the app it was important that we got all the moving parts done in order. We used Trello to achieve this. Breaking down the parts  and components, and delegating a team member with due dates on some components. The dates were important because some functions depended on others.
+
+We divided the work work up as follows after discussing strengths and weaknesses. 
+
+- Fabian - Server side
+- Claire - Client side
+- Cameron - HTML and CSS
+
+We all leaned on each for help and feedback when reaching hurdles. We had 1 or 2 calls a week to check in on progress plus many messages, Discord was used to stay in touch and screen share for trouble shooting.
+
+![Trello Board](./docImages/second.png)
+
+![Trello Board Deployed](./docImages/deployed.png)
+
+![Trello Board JWT](./docImages/jwt.png)
+
+![Trello Board Frontend](./docImages/frontend.png)
+
+![Trello Board Booking](./docImages/booking-calender.png)
+
+![Trello Board Comments](./docImages/comments.png)
+
+![Trello Board Testing](./docImages/server-testing.png)
+
+#### GitHub
+
+We created two repositories in our Azure Splash Organization. This made deploying a smoother process. Fabian worked on the main branch and then once deployed and working started using branches to update and add features. The team used branches while working on the client side. Once the branch was complete and ready to merge, a pull request was created and it would then be reviewed by another team member. If all was good any conflicts would be resolved and squashed and merged in most case instead of just merging. Once the branches were merged a new one would be created. We did not delete branches unless needed. Fabian had accidentally made a second branch for the some function, so said branch was deleted. 
+
 
 
 ## Route Testing

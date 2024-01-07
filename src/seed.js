@@ -39,6 +39,7 @@ databaseConnect().then(async () => {
         phoneNumber:"0401438902",
         age: "26",
         suburb: "Mermaid Water",
+        role: "worker"
        
     });
 
