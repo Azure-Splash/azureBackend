@@ -39,7 +39,6 @@ router.post("/login", async (request, response) => {
 			return response.status(401).json({message: 'Invalid Email or Password!'})
 		}
 
-		response.redirect('/bookings');
 
 		const token = jwt.sign({id: user._id, email: user.email, role: user.role}, process.env.USER_JWT_KEY, { expiresIn: '3h'});
 
