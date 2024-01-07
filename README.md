@@ -1,5 +1,41 @@
 # azureBackend
 
+## Deployments
+
+Netlify was used to deploy the client side
+- [Azure Splash App](https://azuresplash.netlify.app/)
+
+Heroku was used to deploy the server
+- [App Server](https://azures-splash-8d7c939ebec7.herokuapp.com/)
+
+
+
+
+
+
+## Project Management & Source Control
+
+When developing the app it was important that we got all the moving parts done in order. We used Trello to achieve this. Breaking down the parts  and components, and delegating a team member with due dates on some components. The dates were important because some functions depended on others.
+
+We divided the work work up as follows after discussing strengths and weaknesses. 
+
+- Fabian - Server side
+- Claire - Client side
+- Cameron - HTML and CSS
+
+We all leaned on each for help and feedback when reaching hurdles. We had 1 or 2 calls a week to check in on progress plus many messages, Discord was used to stay in touch and screen share for trouble shooting.
+
+#### GitHub
+
+We created two repositories in our Azure Splash Organization. This made deploying a smoother process. Fabian worked on the main branch and then once deployed and working started using branches to update and add features. The team used branches while working on the client side. Once the branch was complete and ready to merge, a pull request was created and it would then be reviewed by another team member. If all was good any conflicts would be resolved and squashed and merged in most case instead of just merging. Once the branches were merged a new one would be created. We did not delete branches unless needed. Fabian had accidentally made a second branch for the some function, so said branch was deleted. 
+
+
+
+
+
+
+
+
 
 ## Route Testing
 
