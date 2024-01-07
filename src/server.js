@@ -3,8 +3,6 @@ const app = express();
 const cors = require('cors');
 const helmet = require('helmet');
 
-
-const helmet = require("helmet");
 app.use(helmet());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
