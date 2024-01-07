@@ -15,20 +15,10 @@ app.use(
 );
 
 const corsOptions = {
-	origin: ["http://localhost:3000/","http://localhost:3005", "https://azuresplash.netlify.app/"],
-	optionsSuccessStatus: 200 
-}
-
+    origin: ["http://localhost:3000", "http://localhost:3005", "https://azuresplash.netlify.app"],
+    optionsSuccessStatus: 200
+};
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
-
-// app.use(cors({
-//     origin: ["http://localhost:3000/","http://localhost:3005", "https://azuresplash.netlify.app/"],
-//     methods: ['POST', 'GET', 'OPTIONS', 'DELETE'],
-//     credentials: true,
-//   }));
-// app.use(cors(corsOptions));
-// app.options("*", cors(corsOptions));
 
 // Configure API data receiving & sending
 app.use(express.json());
@@ -40,12 +30,15 @@ app.get("/", (request,response)=>{
     })
 });
 
-// enable cors
-// app.use(function(_, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
+// Enable CORS
+app.use(function(_, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+// Middleware to handle preflight requests
+app.options("*", cors());
 
 // add controllers
 
