@@ -24,12 +24,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.get("/", (request,response)=>{
-    response.json({
-        message:"Azure Splash"
-    })
-});
-
 // Enable CORS
 app.use(function(_, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -39,6 +33,15 @@ app.use(function(_, res, next) {
 
 // Middleware to handle preflight requests
 app.options("*", cors());
+
+
+// welcome route
+app.get("/", (request,response)=>{
+    response.json({
+        message:"Azure Splash"
+    })
+});
+
 
 // add controllers
 
