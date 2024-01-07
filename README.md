@@ -24,6 +24,65 @@
  [Client Repo](https://github.com/Azure-Splash/azureBackend)
 
 
+ #### Users
+
+ ```Javascript
+ 
+     // Admin user 
+    let newAdmin = await User.create({
+
+        firstName: "Stacy",
+        lastName: "Jones",
+        email: "stacy@azure.com",
+        password: "password",
+        phoneNumber:"0404999222",
+        age: "45",
+        suburb: "Burleigh",
+        role: "admin"
+    });
+
+    // User Model
+    
+    let newUser = await User.create({
+
+        firstName: "Jean",
+        lastName: "Peters",
+        email: "jean@gmail.com",
+        password: "password12",
+        phoneNumber:"0401438902",
+        age: "26",
+        suburb: "Mermaid Water",
+        role: "worker"
+       
+    });
+
+    let newUser1 = await User.create({
+
+        firstName: "Tom",
+        lastName: "Roman",
+        email: "tom@azure.com",
+        password: "password",
+        phoneNumber:"0402663123",
+        age: "30",
+        suburb: "Miami",
+       
+    });
+
+    let newUser2 = await User.create({
+
+        firstName: "John",
+        lastName: "Peters",
+        email: "john@gmail.com",
+        password: "password12",
+        phoneNumber:"0401438904",
+        age: "34",
+        suburb: "Adelaide",
+     
+    });
+ 
+ ```
+
+
 
 ## Project Management & Source Control
 
