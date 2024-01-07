@@ -2,6 +2,9 @@ const express = require('express')
 const app = express();
 const cors = require('cors');
 const helmet = require('helmet');
+// Make the .env data ready for use.
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.use(helmet());
 app.use(helmet.permittedCrossDomainPolicies());
